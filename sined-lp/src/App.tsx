@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.scss'
+import Form from './app/pages/Form'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,6 +13,9 @@ function App() {
           <span className='logo-text'>SINED</span>
         </div>
       </header>
+      <section>
+        <Form />
+      </section>
     </main>
   )
 }

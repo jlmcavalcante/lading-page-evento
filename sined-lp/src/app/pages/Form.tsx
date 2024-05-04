@@ -42,42 +42,44 @@ export default function Form() {
   }
 
   return (
-    <main className='component-container'>
-      <form 
-        onSubmit={handleSubmit(createUser)}
-        className='form-container'
-      >
-        <div className='input-container'>
-          <label htmlFor="">E-mail:</label>
-          <input 
-            type="email"
-            {...register('email')}
-          />
-
-          {/* se existir um erro para esse campo --> mostrar mensagem de erro */}
-          {errors.email && <span>{errors.email.message}</span>}
-        </div>
-
-        <div className='input-container'>
-          <label htmlFor="">Senha:</label>
-          <input 
-            type="password"
-            {...register('password')}
-          />
-          {errors.password && <span>{errors.password.message}</span>}
-        </div>
-        
-        <button 
-          type="submit"
-          className='sub-btn'
+    <div className="center">
+      <main className='component-container'>
+        <form 
+          onSubmit={handleSubmit(createUser)}
+          className='form-container'
         >
-          Salvar
-        </button>
-      </form>
+          <div className='input-container'>
+            <label htmlFor="">E-mail:</label>
+            <input 
+              type="email"
+              {...register('email')}
+            />
 
-      <pre>
-        {output}
-      </pre>
-    </main>
+            {/* se existir um erro para esse campo --> mostrar mensagem de erro */}
+            {errors.email && <span>{errors.email.message}</span>}
+          </div>
+
+          <div className='input-container'>
+            <label htmlFor="">Senha:</label>
+            <input 
+              type="password"
+              {...register('password')}
+            />
+            {errors.password && <span>{errors.password.message}</span>}
+          </div>
+          
+          <button 
+            type="submit"
+            className='sub-btn'
+          >
+            Salvar
+          </button>
+        </form>
+
+        <pre>
+          {output}
+        </pre>
+      </main>
+    </div>
   )
 }

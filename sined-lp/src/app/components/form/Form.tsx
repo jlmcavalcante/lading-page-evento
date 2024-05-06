@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Button, Datepicker, Label, Select, TextInput } from "flowbite-react";
-import { useEffect, useState } from "react";
-import { SubmitHandler, Controller, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 
@@ -28,7 +28,7 @@ const createUserFormSchema = z.object({
     .refine((email) => {
       return email.endsWith("@somosicev.com");
     }, "O e-mail precisa ser do ICEV"),
-  nascimento: z.string(),
+  nascimento: z.coerce.string().min(10, 'Insira sua data de nascimento.').date(),
   cidade: z.string().min(1),
   estado: z.string().min(1),
 });
@@ -43,7 +43,7 @@ export default function Form() {
     setOutput(JSON.stringify(data, null, 2));
   }
 
-  const {register, handleSubmit, control, watch, formState: { errors }} = useForm<CreateUserFormData>({
+  const {register, handleSubmit, formState: { errors }} = useForm<CreateUserFormData>({
     // Objeto de configuração para reconhecimento das regras de validação.
     resolver: zodResolver(createUserFormSchema),
   });
@@ -98,12 +98,12 @@ export default function Form() {
           </div>
 
           <div>
-            {/* !!!!!!!!!!! TO-DO: AJEITAR ESSA DATA */}
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="nascimento" value="Data de Nascimento:" />
               </div>
               <TextInput type="date" {...register("nascimento")} />
+
               {errors.nascimento && <span className="">{errors.nascimento.message}</span>}
             </div>
 

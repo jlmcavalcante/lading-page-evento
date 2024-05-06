@@ -20,18 +20,16 @@ export default function Page() {
         <div className='content-container'>
           <div className='menu'>
             <div className="logo">
-              <img src="/open-book-w.png" alt="" width={40}/>
-              <h3>SINED</h3>
+              <img src="/logo-sined-removebg.png" alt="" width={120}/>
             </div>
             <div className='item-menu'>
-              <a href="#">Route A</a>
             </div>
           </div>
         </div>
 
         <div className="uppercase mt-16 flex flex-col gap-4 text-center text-3xl font-bold tracking-tight text-white-900 sm:text-5xl">
           <span>
-            Simpósio Nacional
+            VI Simpósio Nacional
           </span>
           <span>
             de Educação

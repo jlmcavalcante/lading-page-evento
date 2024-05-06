@@ -60,9 +60,9 @@ export default function Form() {
 
   return (
     <div className="max-w-screen-lg mx-auto px-2 flex items-center justify-center">
-      <form onSubmit={handleSubmit(createUser)}>
-        <div className="flex flex-row gap-8 mb-8">
-          <div className="flex flex-col">
+      <form onSubmit={handleSubmit(createUser)} className="flex flex-col items-center">
+        <div className="flex flex-row gap-16 mb-8 flex-auto">
+          <div className="flex flex-col gap-4">
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="name" value="Nome:" />
@@ -97,7 +97,7 @@ export default function Form() {
             </div>
           </div>
 
-          <div>
+          <div className="flex flex-col gap-4">
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="nascimento" value="Data de Nascimento:" />
@@ -136,7 +136,7 @@ export default function Form() {
           </div>
         </div>
         
-        <Button type="submit">Confirmar</Button>
+        <Button type="submit" className="wx-screen-lg">Confirmar</Button>
       </form>
 
       <pre>{output}</pre>

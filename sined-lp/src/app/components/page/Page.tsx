@@ -20,7 +20,7 @@ export default function Page() {
         <div className='content-container'>
           <div className='menu'>
             <div className="logo">
-              <img src="/logo-sined-removebg.png" alt="" width={120}/>
+              <img src="/logo-sined-removebg-white.png" alt="logo_sined" width={120}/>
             </div>
             <div className='item-menu'>
             </div>

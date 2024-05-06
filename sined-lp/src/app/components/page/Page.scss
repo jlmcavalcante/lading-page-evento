@@ -1,11 +1,12 @@
 .main {
   width: 100%;
   min-height: 400px;
-  padding: 40px 0;
+  padding: 32px 0;
   
   background-image: url('/bg-waves.jpg');
   background-position: center;
   background-size: cover;
+  color: #fff;
 }
 
 .menu {
@@ -42,8 +43,8 @@ section {
   width: 100%;
   min-height: 400px;
   padding: 40px 0;
-  background-color: #035F90;
-  border-top: 1px solid #000;
+  background-color:aliceblue;
+  border-top: 1px solid #3030303a;
 }
 
 @media screen and (max-width: 768px) {

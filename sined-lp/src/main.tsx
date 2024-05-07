@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
-import './index.css'
-import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom'
-import Success from './app/components/success/Success.tsx'
 import Page from './app/components/page/Page.tsx'
+import Success from './app/components/success/Success.tsx'
+import './index.css'
 
 const router = createBrowserRouter([
   {

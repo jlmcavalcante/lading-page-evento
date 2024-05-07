@@ -5,7 +5,8 @@
 * {
   padding: 0;
   margin: 0;
-  font-family: Poppins, sans-serif;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
 }
 
 html, body {

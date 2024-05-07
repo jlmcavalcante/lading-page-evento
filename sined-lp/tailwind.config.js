@@ -8,7 +8,11 @@ export default {
     flowbite.content(),
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'sined-yellow': '#ffc508'
+      }
+    },
   },
   plugins: [
     flowbite.plugin(),

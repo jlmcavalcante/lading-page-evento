@@ -3,10 +3,17 @@
   min-height: 400px;
   padding: 1.5rem 0;
   
+  // background-image: url('/bg-waves.jpg');
   background-image: url('/bg-waves.jpg');
   background-position: center;
   background-size: cover;
   color: #fff;
+}
+
+.fundo {
+  background-image: url('/bg-waves.jpg');
+  background-position: center;
+  background-size: cover;
 }
 
 .menu {

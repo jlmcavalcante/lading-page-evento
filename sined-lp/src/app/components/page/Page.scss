@@ -19,7 +19,7 @@
 .menu {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
 
   .logo {
@@ -51,7 +51,6 @@ section {
   min-height: 400px;
   padding: 40px 0;
   background-color:aliceblue;
-  border-top: 1px solid #3030303a;
 }
 
 @media screen and (max-width: 768px) {

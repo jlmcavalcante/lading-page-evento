@@ -1,10 +1,11 @@
-import { Button, Tabs, Card } from "flowbite-react";
+import { Button, Card, Carousel, Tabs } from "flowbite-react";
 import { useRef } from 'react';
 import { HiCalendar } from "react-icons/hi";
 import '../../../index.css';
+import { customTabTheme } from '../../flowbite-themes/TabsTheme';
+import { customCarouselTheme } from '../../flowbite-themes/CarouselTheme';
 import Form from '../form/Form';
 import './Page.scss';
-
 
 
 export default function Page() {
@@ -52,21 +53,36 @@ export default function Page() {
         </div>
       </div>
 
-      <section>
+      <section className="bg-[#016D94]">
         <div className="content-container flex-col">
-          <div className="fundo flex flex-col items-center my-8 rounded-tr-3xl rounded-bl-3xl p-4">
-            <span className="text-center text-2xl font-bold text-white uppercase">
+          <div className="mb-8 mt-4">
+            <span className="text-2xl font-medium text-white uppercase">
               Programação do Evento
             </span>
+            <div className="bg-white w-full h-1 rounded-r-lg"></div>
           </div>
-          <Tabs aria-label="Default tabs" style="default" className="w-full">
-            <Tabs.Item active title="01/01/2024" icon={HiCalendar}>
+
+          <Tabs
+            aria-label="Default tabs"
+            theme={customTabTheme}
+            style="underline"
+            className="w-full"
+          >
+            <Tabs.Item
+              active
+              title="01/01/2024"
+              icon={HiCalendar}
+              className="hover:border-white hover:text-white"
+            >
               <Card className="w-full mb-4">
-                <h5 className="text-2xl font-bold tracking-tight text-gray-800 dark:text-white">
+                <h5 className="text-2xl font-bold tracking-tight text-gray-800 dark:hover:text-white">
                   09:00 - 10:00
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Abertura do evento com uma palestra sobre as tendências futuras na intersecção da educação e tecnologia. Discussão sobre inteligência artificial, realidade aumentada e aprendizado virtual.
+                  Abertura do evento com uma palestra sobre as tendências
+                  futuras na intersecção da educação e tecnologia. Discussão
+                  sobre inteligência artificial, realidade aumentada e
+                  aprendizado virtual.
                 </p>
               </Card>
 
@@ -75,7 +91,9 @@ export default function Page() {
                   10:15 - 11:15
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Workshop interativo que explora ferramentas emergentes como tablets, softwares educacionais e plataformas de ensino online.
+                  Workshop interativo que explora ferramentas emergentes como
+                  tablets, softwares educacionais e plataformas de ensino
+                  online.
                 </p>
               </Card>
             </Tabs.Item>
@@ -86,7 +104,8 @@ export default function Page() {
                   08:00 - 10:00
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Um painel com educadores, estudantes e desenvolvedores discutindo os desafios e soluções para a educação à distância.
+                  Um painel com educadores, estudantes e desenvolvedores
+                  discutindo os desafios e soluções para a educação à distância.
                 </p>
               </Card>
 
@@ -95,7 +114,9 @@ export default function Page() {
                   10:15 - 11:15
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Apresentação sobre como a inteligência artificial está sendo usada para personalizar a experiência de aprendizado, com exemplos práticos e estudos de caso.
+                  Apresentação sobre como a inteligência artificial está sendo
+                  usada para personalizar a experiência de aprendizado, com
+                  exemplos práticos e estudos de caso.
                 </p>
               </Card>
             </Tabs.Item>
@@ -106,7 +127,9 @@ export default function Page() {
                   09:30 - 10:00
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Um workshop prático sobre como criar conteúdos educativos interativos usando software específico e técnicas de engajamento.
+                  Um workshop prático sobre como criar conteúdos educativos
+                  interativos usando software específico e técnicas de
+                  engajamento.
                 </p>
               </Card>
 
@@ -115,7 +138,9 @@ export default function Page() {
                   10:15 - 11:15
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Encerramento do evento com uma sessão de networking, permitindo aos participantes trocar ideias, discutir colaborações futuras e compartilhar contatos.
+                  Encerramento do evento com uma sessão de networking,
+                  permitindo aos participantes trocar ideias, discutir
+                  colaborações futuras e compartilhar contatos.
                 </p>
               </Card>
             </Tabs.Item>
@@ -123,36 +148,72 @@ export default function Page() {
         </div>
       </section>
 
-      <section>
-        <div className="content-container">
-          <div className="content-card">
-            <h3>Título de chamada</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-              tincidunt sollicitudin leo nec bibendum. Vivamus suscipit augue
-              sit amet mauris dignissim, ut mattis lacus consequat.
-            </p>
-          </div>
-          <div className="content-card">
-            <h3>Título de chamada</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-              tincidunt sollicitudin leo nec bibendum. Vivamus suscipit augue
-              sit amet mauris dignissim, ut mattis lacus consequat.
-            </p>
-          </div>
-          <div className="content-card">
-            <h3>Título de chamada</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-              tincidunt sollicitudin leo nec bibendum. Vivamus suscipit augue
-              sit amet mauris dignissim, ut mattis lacus consequat.
-            </p>
-          </div>
-        </div>
-      </section>
       <section ref={sectionRef}>
         <Form />
+      </section>
+
+      <div className="min-h-0 h-64">
+        <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
+          <Carousel slide={true} theme={customCarouselTheme}>
+            <div className="flex h-full items-center justify-center bg-white dark:bg-gray-700 dark:text-white">
+              <img
+                src="/apoiador-1.jpeg"
+                alt="..."
+                width={1/3}
+                className="flex-1 scale-50"
+              />
+              <img
+                src="/apoiador-2.jpeg"
+                alt="..."
+                width={1/3}
+                className="flex-1 scale-50"
+              />
+              <img
+                src="/apoiador-3.jpeg"
+                alt="..."
+                width={1/3}
+                className="flex-1 scale-50"
+              />
+              <img
+                src=""
+                alt=""
+                width={1/3}
+                className="flex-1 scale-50"
+              />
+            </div>
+
+            <div className="flex h-full items-center justify-center bg-white dark:bg-gray-700 dark:text-white">
+              <img
+                src="/apoiador-4.jpeg"
+                alt="..."
+                width={1/3}
+                className="flex-1 scale-50"
+              />
+              <img
+                src="/apoiador-5.jpeg"
+                alt="..."
+                width={1/3}
+                className="flex-1 scale-50"
+              />
+              <img
+                src="/apoiador-6.jpeg"
+                alt="..."
+                width={1/3}
+                className="flex-1 scale-50"
+              />
+              <img
+                src="/apoiador-7.jpeg"
+                alt="..."
+                width={1/3}
+                className="flex-1 scale-50"
+              />
+            </div>
+          </Carousel>
+        </div>
+      </div>
+
+      <section>
+
       </section>
     </div>
   );

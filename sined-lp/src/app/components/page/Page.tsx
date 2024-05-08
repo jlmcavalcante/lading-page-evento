@@ -152,7 +152,11 @@ export default function Page() {
         <Form />
       </section>
 
-      <div className="min-h-0 h-64">
+      <section className="bg-[#016D94]">
+
+      </section>
+
+      <div className="min-h-60">
         <div className="content-container">
           <div className="flex flex-col w-full pt-8">
             <span className="text-2xl font-medium text-[#016D94] uppercase">
@@ -220,9 +224,9 @@ export default function Page() {
         </div>
       </div>
 
-      <section>
+      <div className="bg-[#016D94] h-40">
 
-      </section>
+      </div>
     </div>
   );
 }

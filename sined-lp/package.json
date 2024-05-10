@@ -17,6 +17,9 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
     "react-router-dom": "^6.23.0",
+    "react-scroll": "^1.8.2",
+    "react-icons": "^4.2.0",
+    "styled-components": "^5.3.0",
     "zod": "^3.23.6"
   },
   "devDependencies": {

@@ -5,6 +5,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Modal } from "flowbite-react";
+import { 
+  FormTitle,
+} from "./FormStyles";
 
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
@@ -72,15 +75,14 @@ export default function Form() {
 
   return (
     <div className="content-container flex-col">
-      <div className="mb-8 mt-4">
-        <span className="text-2xl font-medium text-[#016D94] uppercase">
-          Realizar inscrição
-        </span>
-        <div className="bg-[#016D94] w-full h-1 rounded-r-lg"></div>
+      <div className="px-8 py-8">
+        <FormTitle>
+          Inscrição
+        </FormTitle>
       </div>
 
-      <form onSubmit={handleSubmit(createUser)} className="flex flex-col">
-        <div className="flex flex-row gap-16 mb-8">
+      <form onSubmit={handleSubmit(createUser)} className="flex flex-col px-8">
+        <div className="flex flex-col md:flex-row gap-16 mb-8">
           <div className="flex flex-col gap-4 flex-1">
             <div>
               <div className="mb-2 block">
@@ -169,11 +171,13 @@ export default function Form() {
           type="submit"
           onClick={() => setOpenModal(true)}
           disabled={!isValid}
-          className="w-1/4"
+          className="w-full"
         >
           Confirmar
         </Button>
       </form>
+
+
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>Termos de Serviço</Modal.Header>
         <Modal.Body>

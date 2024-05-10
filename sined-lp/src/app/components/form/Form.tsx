@@ -46,7 +46,7 @@ function todosAtributosPreenchidos(obj: any): boolean {
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export default function Form() {
-  const [output, setOutput] = useState();
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   function createUser(data: any) {
@@ -200,8 +200,12 @@ export default function Form() {
             </div>
             <div className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-2">
-                <Checkbox id="accept" defaultChecked />
-                <Label htmlFor="accept" className="flex">
+                <Checkbox 
+                  id="accept" 
+                  checked={isTermsAccepted}
+                  onChange={(e) => setIsTermsAccepted(e.target.checked)}
+                />
+                <Label htmlFor="accept" className="flex" >
                   Li e concordo com os&nbsp;
                   <a
                     href="#"
@@ -215,7 +219,7 @@ export default function Form() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => setOpenModal(false)}>Confirmar</Button>
+          <Button onClick={() => setOpenModal(false)} disabled={!(isValid && isTermsAccepted)}>Confirmar</Button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Cancelar
           </Button>

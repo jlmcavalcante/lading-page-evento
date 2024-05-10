@@ -198,13 +198,13 @@ const Schedule: React.FC = () => {
                                                             content.subcontent.map((sub, index) => {
                                                                 return (
                                                                     <div>
+                                                                        <br />
                                                                         <p>
                                                                             {sub.title} - {sub.description}
                                                                         </p>
                                                                         <p>
                                                                             Local: {sub.location}
                                                                         </p>
-                                                                        <br />
                                                                     </div>
                                                                 );
                                                             })

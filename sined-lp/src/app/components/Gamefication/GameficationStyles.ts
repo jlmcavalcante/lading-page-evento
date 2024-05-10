@@ -22,7 +22,6 @@ export const Image = styled.div`
         height: 300px;
     }
     @media (max-width: 769px) {
-        display: none;
     }
 `;
 
@@ -46,7 +45,7 @@ export const SubTitle = styled.h3`
     font-weight: 400;
     margin-bottom: 0.5rem;
     @media (max-width: 768px) {
-        text-align: center;
+        text-align: start;
     }
 `;
 
@@ -54,6 +53,9 @@ export const Title = styled.h1`
     color: var(--color-primary);
     font-size: 3rem;
     margin-bottom: 1rem;
+    @media (max-width: 768px) {
+        text-align: center;
+    }
 `;
 
 export const Text = styled.p`

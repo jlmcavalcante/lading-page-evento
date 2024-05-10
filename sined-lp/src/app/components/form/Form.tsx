@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { Button, Label, Select, TextInput } from "flowbite-react";
+import { Button, Checkbox, Label, Select, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Modal } from "flowbite-react";
 
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
@@ -20,35 +21,44 @@ const createUserFormSchema = z.object({
         })
         .join(" ");
     }),
-  cpf: z.string().min(1),
+  cpf: z.string().min(11, 'Insira no mínimo 11 números').max(14, 'Insira no máximo 14 caracteres'),
   email: z.string()
     .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
     .email("Formato de e-mail inválido") // Validação de email.
-    .toLowerCase()
-    .refine((email) => {
-      return email.endsWith("@sined.com");
-    }, "O e-mail precisa ser @sined.com"),
+    .toLowerCase(),
   nascimento: z.coerce.string().min(10, 'Insira sua data de nascimento.').date(),
-  cidade: z.string().min(1),
-  estado: z.string().min(1),
-  poder: z.string().min(1),
-  orgao: z.string().min(1),
+  cidade: z.string().min(1, 'Selecione a sua cidade'),
+  estado: z.string().min(1, 'Selecione o seu estado'),
 });
+
+function todosAtributosPreenchidos(obj: any): boolean {
+  for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+          if (obj[key] === null || obj[key] === undefined) {
+              return false;
+          }
+      }
+  }
+  return true;
+}
 
 // Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export default function Form() {
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState();
+  const [openModal, setOpenModal] = useState(false);
 
   function createUser(data: any) {
-    setOutput(JSON.stringify(data, null, 2));
   }
 
-  const {register, handleSubmit, formState: { errors }} = useForm<CreateUserFormData>({
+  const {register, handleSubmit, formState: { errors, isValid }, watch} = useForm<CreateUserFormData>({
     // Objeto de configuração para reconhecimento das regras de validação.
     resolver: zodResolver(createUserFormSchema),
+    mode: 'onChange',  // Validação em tempo real.
   });
+
+  const watchedValues = watch();
 
   const postUser = async () => {
     try {
@@ -69,10 +79,7 @@ export default function Form() {
         <div className="bg-[#016D94] w-full h-1 rounded-r-lg"></div>
       </div>
 
-      <form
-        onSubmit={handleSubmit(createUser)}
-        className="flex flex-col"
-      >
+      <form onSubmit={handleSubmit(createUser)} className="flex flex-col">
         <div className="flex flex-row gap-16 mb-8">
           <div className="flex flex-col gap-4 flex-1">
             <div>
@@ -155,46 +162,65 @@ export default function Form() {
                 )}
               </div>
             </div>
-
-            {/* Container para input de cargo e função */}
-            <div className="flex gap-8 flex-1">
-              <div className="flex-1">
-                <div className="mb-2 block">
-                  <Label htmlFor="poder" value="Poder:" />
-                </div>
-                <Select id="poder" {...register("poder")} defaultValue={0}>
-                  <option> </option>
-                  <option>Executivo</option>
-                  <option>Legislativo</option>
-                </Select>
-                {errors.poder && (
-                  <span className="">{errors.poder.message}</span>
-                )}
-              </div>
-
-              <div className="flex-1">
-                <div className="mb-2 block">
-                  <Label htmlFor="orgao" value="Órgão:" />
-                </div>
-                <Select id="orgao" {...register("orgao")} defaultValue={0}>
-                  <option> </option>
-                  <option>Ministério de ...</option>
-                  <option>Tribunal de ...</option>
-                </Select>
-                {errors.cidade && (
-                  <span className="">{errors.cidade.message}</span>
-                )}
-              </div>
-            </div>
           </div>
         </div>
 
-        <Button type="submit" className="w-1/4">
+        <Button
+          type="submit"
+          onClick={() => setOpenModal(true)}
+          disabled={!isValid}
+          className="w-1/4"
+        >
           Confirmar
         </Button>
       </form>
-
-      <pre>{output}</pre>
+      <Modal show={openModal} onClose={() => setOpenModal(false)}>
+        <Modal.Header>Termos de Serviço</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400">
+              <span>
+                {watchedValues.name} 
+              </span>
+              <span>
+                {watchedValues.email}
+              </span>
+              <span>
+                {watchedValues.cpf}
+              </span>
+              <span>
+                {watchedValues.nascimento}
+              </span>
+              <span>
+                {watchedValues.estado}
+              </span>
+              <span>
+                {watchedValues.cidade}
+              </span>
+            </div>
+            <div className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-2">
+                <Checkbox id="accept" defaultChecked />
+                <Label htmlFor="accept" className="flex">
+                  Li e concordo com os&nbsp;
+                  <a
+                    href="#"
+                    className="text-cyan-600 hover:underline dark:text-cyan-500"
+                  >
+                    termos de.
+                  </a>
+                </Label>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setOpenModal(false)}>Confirmar</Button>
+          <Button color="gray" onClick={() => setOpenModal(false)}>
+            Cancelar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

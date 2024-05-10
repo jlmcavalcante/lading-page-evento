@@ -1,0 +1,8 @@
+  email: z.string()
+    .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
+    .email("Formato de e-mail inválido") // Validação de email.
+    .toLowerCase()
+    .refine((email) => {
+      return email.endsWith("@sined.com");
+    }, "O e-mail precisa ser @sined.com"),
+************

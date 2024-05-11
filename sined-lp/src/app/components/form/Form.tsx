@@ -207,8 +207,9 @@ export default function Form() {
                 </div>
                 <Select id="cidade" {...register("cidade")} defaultValue={0}>
                   <option> </option>
-                  <option>Teresina</option>
-                  <option>Parnaíba</option>
+                  {cities.map(city => (
+                    <option key={city.id} value={city.id}>{city.name}</option>
+                  ))}
                 </Select>
                 {errors.cidade && (
                   <span className="">{errors.cidade.message}</span>

@@ -108,6 +108,9 @@ export default function Form() {
     };
 
     getStates();
+    if(selectedState) {
+      getCities();
+    };
   })
 
   const postUser = async () => {

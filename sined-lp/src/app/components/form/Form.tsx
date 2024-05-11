@@ -81,9 +81,9 @@ export default function Form() {
         </FormTitle>
       </div>
 
-      <form onSubmit={handleSubmit(createUser)} className="flex flex-col pb-16">
-        <div className="flex flex-col md:flex-row gap-16 mb-8">
-          <div className="flex flex-col gap-4 flex-1">
+      <form onSubmit={handleSubmit(createUser)} className="flex flex-col">
+        <div className="flex flex-col md:flex-row gap-y-4 gap-x-16 mb-8">
+          <div className="flex flex-col gap-4 flex-1 px-8">
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="name" value="Nome:" />
@@ -122,7 +122,7 @@ export default function Form() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 flex-1">
+          <div className="flex flex-col gap-4 flex-1 px-8">
             <div>
               <div className="mb-2 block">
                 <Label htmlFor="nascimento" value="Data de Nascimento:" />
@@ -164,17 +164,31 @@ export default function Form() {
                 )}
               </div>
             </div>
+            <div className="mb-2 block">
+                <Label htmlFor="Poder" value="Poder:" />
+              </div>
+            <Select id="poder" {...register("poder")} defaultValue={""}>
+                  <option> </option>
+                  <option>Estudante</option>
+                  <option>Professor</option>
+                  <option>Coordenador</option>
+                  <option>Outro</option>
+              </Select>
+              <Label htmlFor="Especificação" value="Especificação:" />
+              <TextInput type="text" placeholder="especifique" {...register("especificacao")} />
           </div>
         </div>
 
-        <Button
-          type="submit"
-          onClick={() => setOpenModal(true)}
-          disabled={!isValid}
-          className="w-full"
-        >
-          Confirmar
-        </Button>
+        <div className="px-8 py-2">
+          <Button
+            type="submit"
+            onClick={() => setOpenModal(true)}
+            disabled={!isValid}
+            className="w-full"
+          >
+            Confirmar
+          </Button>
+        </div>
       </form>
 
 

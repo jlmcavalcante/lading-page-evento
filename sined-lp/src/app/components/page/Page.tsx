@@ -25,6 +25,10 @@ export default function Page() {
       </section>
 
       <section>
+        <Gamefication />
+      </section>
+
+      <section>
         <Form />
       </section>
     </div>

@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Button, Checkbox, Label, Select, TextInput } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Modal } from "flowbite-react";
@@ -37,7 +37,7 @@ const createUserFormSchema = z.object({
     .date(),
   cidade: z.string().min(1, "Selecione a sua cidade"),
   estado: z.string().min(1, "Selecione o seu estado"),
-  poder: z.string().min(1),
+  poder: z.string().min(1, "Selecione um poder"),
   especificacao: z.string().min(1, "Insira uma especificação"),
 });
 
@@ -55,9 +55,23 @@ function todosAtributosPreenchidos(obj: any): boolean {
 // Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
+type StateType = {
+  "id": string,
+  "name": string,
+}
+type CityType = {
+  "id": string,
+  "name": string,
+  "id_state": string,
+}
+
 export default function Form() {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [states, setStates] = useState<StateType[]>([]);
+  const [cities, setCities] = useState<CityType[]>([]);
+  const [selectedState, setselectedState] = useState<StateType>();
+
 
   function createUser(data: any) {}
 
@@ -74,6 +88,28 @@ export default function Form() {
 
   const watchedValues = watch();
 
+  useEffect(()=>{
+    const getStates = async () => {
+      try {
+        const response = await axios.get("https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states");
+        setStates(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };    
+    
+    const getCities = async () => {
+      try {
+        const response = await axios.get(`https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/${selectedState!.id}/cities`);
+        setCities(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getStates();
+  })
+
   const postUser = async () => {
     try {
       const response = await axios.post("https://url.com/post", {
@@ -82,7 +118,9 @@ export default function Form() {
     } catch (error) {
       console.log(error);
     }
-  };
+  };  
+  
+
 
   return (
     <div className="content-container flex-col">
@@ -151,8 +189,9 @@ export default function Form() {
                 </div>
                 <Select id="estado" {...register("estado")} defaultValue={0}>
                   <option> </option>
-                  <option>Piauí</option>
-                  <option>Maranhão</option>
+                  {states.map(item => (
+                    <option key={item.id} value={item.id}>{item.name}</option>
+                  ))}
                 </Select>
                 {errors.estado && (
                   <span className="">{errors.estado.message}</span>

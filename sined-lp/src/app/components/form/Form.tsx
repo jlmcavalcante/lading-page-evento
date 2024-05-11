@@ -75,13 +75,13 @@ export default function Form() {
 
   return (
     <div className="content-container flex-col">
-      <div className="px-8 py-8">
+      <div className="py-8">
         <FormTitle>
           Inscrição
         </FormTitle>
       </div>
 
-      <form onSubmit={handleSubmit(createUser)} className="flex flex-col px-8">
+      <form onSubmit={handleSubmit(createUser)} className="flex flex-col pb-16">
         <div className="flex flex-col md:flex-row gap-16 mb-8">
           <div className="flex flex-col gap-4 flex-1">
             <div>

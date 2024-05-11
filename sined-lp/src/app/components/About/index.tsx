@@ -83,6 +83,8 @@ const About: React.FC = () => {
                     </CardText>
                     <CardNumber></CardNumber>
                 </Card>
+            </CardsContainer>
+            <CardsContainer>
                 <Card>
                     <CardIcon>
                         <GiPublicSpeaker />

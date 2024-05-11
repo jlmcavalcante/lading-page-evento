@@ -27,7 +27,6 @@ export default function Page() {
       <section>
         <Form />
       </section>
-
     </div>
   );
 }

@@ -5,6 +5,7 @@ export const Container = styled.section`
     padding: 5rem 10rem;
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     background: var(--gradient-white-2);
     gap: 2rem;
     @media (max-width: 1200px) {
@@ -27,7 +28,7 @@ export const InfoContainer = styled.div`
     gap: 1rem;
     @media (max-width: 1201px) {
         width: 100%;
-        gap: 1rem;
+        gap: 0.5rem;
     }
 
     @media (max-width: 768px) {
@@ -38,8 +39,8 @@ export const InfoContainer = styled.div`
 export const InfoSubTitle = styled.h3`
     color: var(--color-gray);
     font-weight: 400;
-    margin-bottom: 0.5rem;
-    @media (max-width: 768px) {
+    font-size: 1.8rem;
+=    @media (max-width: 768px) {
         text-align: center;
     }
 `;
@@ -106,11 +107,10 @@ export const Button = styled(LinkScroll)`
 `;
 
 export const CardsContainer = styled.div`
+    height: 50%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    justify-items: center;
-
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 2rem;
     @media (max-width: 600px) {
         grid-template-columns: 1fr;
     }
@@ -162,6 +162,7 @@ export const CardIcon = styled.div`
 export const Card = styled.div`
     padding: 40px;
     max-width: 350px;
+    border-radius: 0.8rem;
     height: 200px;
     background: white;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;

@@ -10,7 +10,16 @@ const apiBaseUrl = "http://172.16.80.28:3000/api";
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
-  name: z
+  cpf: z
+    .string()
+    .min(11, "Insira no mínimo 11 números")
+    .max(14, "Insira no máximo 14 caracteres"),
+  email: z
+    .string()
+    .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
+    .email("Formato de e-mail inválido") // Validação de email.
+    .toLowerCase(),
+  full_name: z
     .string()
     .min(1, "O nome é obrigatório")
     .transform((name) => {
@@ -23,26 +32,17 @@ const createUserFormSchema = z.object({
         })
         .join(" ");
     }),
-  cpf: z
-    .string()
-    .min(11, "Insira no mínimo 11 números")
-    .max(14, "Insira no máximo 14 caracteres"),
-  email: z
-    .string()
-    .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
-    .email("Formato de e-mail inválido") // Validação de email.
-    .toLowerCase(),
-  nascimento: z.coerce
+  birth_date: z.coerce
     .string()
     .min(10, "Insira sua data de nascimento.")
     .date(),
-  estado: z.string().min(0, "Selecione um estado"),
-  cidade: z.string().min(0, "Selecione uma cidade"),
-  entidade: z.string().min(0, "Selecione uma entidade"),
-  especificacao: z.string().min(1, "Especifique a entidade/órgão"),
-  isDeficient: z.boolean(),
-  deficient_description: z.string().min(0, "Especifique a deficiência").optional(),
-  needsAdaptation: z.boolean(),
+  id_state: z.string().min(0, "Selecione um estado"),
+  id_city: z.string().min(0, "Selecione uma cidade"),
+  id_entity: z.string().min(0, "Selecione uma entidade"),
+  entity_description: z.string().min(1, "Especifique a entidade/órgão"),
+  is_disabled: z.boolean(),
+  disabled_description: z.string().min(0, "Especifique a deficiência").optional(),
+  needs_adaptation: z.boolean(),
   adaptation_description: z.string().min(0, "Especifique a adaptação").optional(),
 });
 
@@ -183,10 +183,10 @@ export default function Form() {
               <TextInput
                 type="text"
                 placeholder="Insira seu nome"
-                {...register("name")}
+                {...register("full_name")}
               />
               {/* se existir um erro para esse campo --> mostrar mensagem de erro */}
-              {errors.name && <span>{errors.name.message}</span>}
+              {errors.full_name && <span>{errors.full_name.message}</span>}
             </div>
 
             <div>
@@ -217,10 +217,10 @@ export default function Form() {
               <div className="mb-2 block">
                 <Label htmlFor="nascimento" value="Data de Nascimento:" />
               </div>
-              <TextInput type="date" {...register("nascimento")} />
+              <TextInput type="date" {...register("birth_date")} />
 
-              {errors.nascimento && (
-                <span className="">{errors.nascimento.message}</span>
+              {errors.birth_date && (
+                <span className="">{errors.birth_date.message}</span>
               )}
             </div>
 
@@ -231,7 +231,7 @@ export default function Form() {
                 </div>
                 <Select 
                   id="estado" 
-                  {...register("estado")}
+                  {...register("id_state")}
                   onChange={handleStateChange}
                 >
                   <option disabled={true}>Selecione</option>
@@ -241,8 +241,8 @@ export default function Form() {
                     </option>
                   ))}
                 </Select>
-                {errors.estado && (
-                  <span className="">{errors.estado.message}</span>
+                {errors.id_state && (
+                  <span className="">{errors.id_state.message}</span>
                 )}
               </div>
 
@@ -252,7 +252,7 @@ export default function Form() {
                 </div>
                 <Select 
                   id="cidade" 
-                  {...register("cidade")} 
+                  {...register("id_city")} 
                 >
                   <option disabled={true}>Selecione</option>
                   {cities.map((city) => (
@@ -261,8 +261,8 @@ export default function Form() {
                     </option>
                   ))}
                 </Select>
-                {errors.cidade && (
-                  <span className="">{errors.cidade.message}</span>
+                {errors.id_city && (
+                  <span className="">{errors.id_city.message}</span>
                 )}
               </div>
             </div>
@@ -272,11 +272,11 @@ export default function Form() {
             {/* Container para input de cidade e estado */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="entidade" value="Entidade:" />
+                <Label htmlFor="id_entity" value="Entidade:" />
               </div>
               <Select
-                id="entidade"
-                {...register("entidade")} 
+                id="id_entity"
+                {...register("id_entity")} 
               >
                 <option disabled={true}>Selecione</option>
                 {entities.map((entity) => (
@@ -294,7 +294,7 @@ export default function Form() {
               <TextInput
                 type="text"
                 placeholder="Especifique a entidade/órgão"
-                {...register("especificacao")}
+                {...register("entity_description")}
               />
             </div>
             <div>
@@ -305,14 +305,14 @@ export default function Form() {
                 <Checkbox
                   id="isDeficient"
                   checked={isDeficient}
-                  {...register("isDeficient")}
+                  {...register("is_disabled")}
                   onChange={(e) => setIsDeficient(e.target.checked)}
                   className="w-10 h-10 text-[#3c06a4] rounded-lg"
                 />
                 <TextInput
                   type="text"
                   placeholder="Especifique a deficiência"
-                  {...register("deficient_description")}
+                  {...register("disabled_description")}
                   disabled={!isDeficient}
                   className="w-full"
                 />
@@ -326,7 +326,7 @@ export default function Form() {
                 <Checkbox
                   id="needsAdaptation"
                   checked={needsAdaptation}
-                  {...register("needsAdaptation")}
+                  {...register("needs_adaptation")}
                   onChange={(e) => setNeedsAdaptation(e.target.checked)}
                   className="w-10 h-10 text-[#3c06a4] rounded-lg"
                 />
@@ -365,7 +365,7 @@ export default function Form() {
             <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-2">
                 <span className="font-bold">Nome:</span>
-                <span>{userData?.name}</span>
+                <span>{userData?.full_name}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">CPF:</span>
@@ -377,28 +377,34 @@ export default function Form() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Data de Nascimento:</span>
-                <span>{userData?.nascimento}</span>
+                <span>{userData?.birth_date}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Estado:</span>
-                <span>{userData?.estado}</span>
+                <span>{
+                  states.find((state) => state.id === userData?.id_state)?.name
+                }</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Cidade:</span>
-                <span>{userData?.cidade}</span>
+                <span>{
+                  cities.find((city) => city.id === userData?.id_city)?.name
+                }</span>
               </div>
               <div>
-                <span className="font-bold">Entidade:</span>
-                <span>{userData?.entidade}</span>
+                <span className="font-bold gap-2">Entidade:</span>
+                <span>{
+                  entities.find((entity) => entity.id === userData?.id_entity)?.name
+                }</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Especificação:</span>
-                <span>{userData?.especificacao}</span>
+                <span>{userData?.entity_description}</span>
               </div>
               {isDeficient && (
                 <div className="flex items-center gap-2">
                   <span className="font-bold">Deficiente:</span>
-                  <span>{userData?.deficient_description}</span>
+                  <span>{userData?.disabled_description}</span>
                 </div>
               )}
               {needsAdaptation && (

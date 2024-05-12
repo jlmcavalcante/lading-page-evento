@@ -9,6 +9,6 @@ RUN npm run build
 # Stage 2: Production Stage
 FROM nginx:alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
+#COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 3030
 CMD ["nginx", "-g", "daemon off;"]

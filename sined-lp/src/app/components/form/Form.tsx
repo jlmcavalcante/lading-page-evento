@@ -7,6 +7,8 @@ import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { FormTitle } from "./FormStyles";
 
+const apiBaseUrl = "sined-api-c";
+
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
   name: z
@@ -55,22 +57,30 @@ function todosAtributosPreenchidos(obj: any): boolean {
 // Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
-type StateType = {
-  "id": string,
-  "name": string,
-}
-type CityType = {
-  "id": string,
-  "name": string,
-  "id_state": string,
-}
+
 
 export default function Form() {
+  type StateType = {
+    "id": string,
+    "name": string,
+  }
+  type CityType = {
+    "id": string,
+    "name": string,
+    "id_state": string,
+  }
+  const [isDeficient, setIsDeficient] = useState(false);
+  const [needsAdaptation, setNeedsAdaptation] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [states, setStates] = useState<StateType[]>([]);
   const [cities, setCities] = useState<CityType[]>([]);
   const [selectedState, setselectedState] = useState<StateType>();
+
+  console.log("evaluating states")
+  console.log(states);
+  console.log(typeof states); // Isso irá retornar 'object' se states for um objeto ou array
+  console.log(Array.isArray(states)); // Isso irá retornar true se states for um array
 
 
   function createUser(data: any) {}
@@ -91,16 +101,44 @@ export default function Form() {
   useEffect(()=>{
     const getStates = async () => {
       try {
-        const response = await axios.get("https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states");
-        setStates(response.data);
+        console.log("getStates");
+        const apiStatesURL = `${apiBaseUrl}/states`;
+        fetch(apiStatesURL).then(
+            response => {
+                console.log(response);
+                try {
+                    console.log("try to getStates");
+                    return response.json();
+                }
+                catch (error) {
+                    console.log("catched geting states from json");
+                    console.log(error);
+                }
+            }
+        ).then(
+            data => {
+                console.log("data");
+                console.log(data);
+                if (data.length < 1) {
+                    console.log("No states found");
+                    return;
+                }
+                else {
+                    console.log("States found");
+                    setStates(data);
+                }
+            }
+        );
       } catch (error) {
+        console.log("catched error on getStates");
         console.log(error);
       }
     };    
     
     const getCities = async () => {
       try {
-        const response = await axios.get(`https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/${selectedState!.id}/cities`);
+        const apiCitiesURL = `${apiBaseUrl}/states/${selectedState!.id}/cities`;
+        const response = await axios.get(`apiCitiesURL/states/${selectedState!.id}/cities`);
         setCities(response.data);
       } catch (error) {
         console.log(error);
@@ -115,7 +153,8 @@ export default function Form() {
 
   const postUser = async () => {
     try {
-      const response = await axios.post("https://url.com/post", {
+      const apiCreateUserURL = `${apiBaseUrl}/users`;
+      const response = await axios.post(apiCreateUserURL, {
         // Adicionar objeto aqui.
       });
     } catch (error) {
@@ -195,6 +234,11 @@ export default function Form() {
                   {states.map(item => (
                     <option key={item.id} value={item.id}>{item.name}</option>
                   ))}
+                  {states.map((state) => (
+                      <option key={state.id} value={state.id}>
+                        {state.name}
+                      </option>
+                    ))}
                 </Select>
                 {errors.estado && (
                   <span className="">{errors.estado.message}</span>

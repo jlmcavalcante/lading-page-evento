@@ -13,6 +13,7 @@ import {
     CardNumber,
     CardText,
     CardTitle,
+    ButtonLink,
 } from "./AboutStyles";
 
 import {
@@ -57,9 +58,9 @@ const About: React.FC = () => {
                     <Button to="subscribe" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
                         Realizar Inscrição
                     </Button>
-                    <Button to="subscribe" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
+                    <ButtonLink className="border drop-shadow-md" href="https://maps.app.goo.gl/5F1EiJsfWKK6VvAx6" target="_blank">
                         Google Maps
-                    </Button>
+                    </ButtonLink>
                 </div>
             </InfoContainer>
             <CardsContainer>

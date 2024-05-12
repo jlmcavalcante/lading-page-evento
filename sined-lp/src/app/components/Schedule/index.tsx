@@ -119,8 +119,8 @@ const Schedule: React.FC = () => {
                     time: "16:30",
                     title: "Blackbox 2",
                     mainSpeaker: {
-                        name: "Flávia Gomes Cordeiro",
-                        title: "MP",
+                        name: "",
+                        title: "",
                     },
                     speakers: [],
                     theme: "",
@@ -270,12 +270,16 @@ const Schedule: React.FC = () => {
                                                         </span>
                                                         <br />
                                                         <span className="">
-                                                            {content.mainSpeaker.name}
+                                                            {content.mainSpeaker.theme}
                                                         </span>
-                                                        <br />
-                                                        <span className="font-normal italic">
-                                                            {content.mainSpeaker.title}
-                                                        </span>
+                                                        {
+                                                            /*
+                                                                <br />
+                                                                <span className="font-normal italic">
+                                                                    {content.mainSpeaker.title}
+                                                                </span>
+                                                            */
+                                                        }
                                                     </Accordion.Title>
                                                     <Accordion.Content>
                                                         <p>

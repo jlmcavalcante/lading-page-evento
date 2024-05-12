@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { Button, Checkbox, Label, Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -7,21 +6,20 @@ import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { FormTitle } from "./FormStyles";
 
-const apiBaseUrl = "https://sined-api-dev-kvgl74sgpa-rj.a.run.app";
-
-type StateType = {
-  "id": string,
-  "name": string,
-}
-type CityType = {
-  "id": string,
-  "name": string,
-  "id_state": string,
-}
+const apiBaseUrl = "http://sined.tcepi.tc.br/api";
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
-  name: z
+  cpf: z
+    .string()
+    .min(11, "Insira no mínimo 11 números")
+    .max(14, "Insira no máximo 14 caracteres"),
+  email: z
+    .string()
+    .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
+    .email("Formato de e-mail inválido") // Validação de email.
+    .toLowerCase(),
+  full_name: z
     .string()
     .min(1, "O nome é obrigatório")
     .transform((name) => {
@@ -34,36 +32,45 @@ const createUserFormSchema = z.object({
         })
         .join(" ");
     }),
-  cpf: z
-    .string()
-    .min(11, "Insira no mínimo 11 números")
-    .max(14, "Insira no máximo 14 caracteres"),
-  email: z
-    .string()
-    .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
-    .email("Formato de e-mail inválido") // Validação de email.
-    .toLowerCase(),
-  birthdate: z.coerce
+  birth_date: z.coerce
     .string()
     .min(10, "Insira sua data de nascimento.")
     .date(),
-  city: z.string().min(1, "Selecione a sua cidade"),
-  state: z.string().min(1, "Selecione o seu estado"),
-  profession: z.string()
-    .min(2, "Indique a sua profissão")
-    .transform((prof) => {
-      return prof
-        .trim()
-        .toLowerCase()
-    }),
-  deficiency: z.string().optional(),
-  adaptation: z.string().optional(),
+  id_state: z.string().min(1, "Selecione um estado").transform((value) => {
+    return parseInt(value);
+  }),
+  id_city: z.string().min(1, "Selecione uma cidade").transform((value) => {
+    return parseInt(value);
+  }),
+  id_entity: z.string().min(1, "Selecione uma entidade").transform((value) => {
+    return parseInt(value);
+  }),
+  entity_description: z.string().min(1, "Especifique a entidade/órgão"),
+  is_disabled: z.boolean(),
+  disabled_description: z.string().min(0, "Especifique a deficiência").optional(),
+  needs_adaptation: z.boolean(),
+  adaptation_description: z.string().min(0, "Especifique a adaptação").optional(),
 });
 
+// Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export default function Form() {
-  // Estados da aplicação:
+  type StateType = {
+    id: number,
+    name: string,
+  }
+  type CityType = {
+    id: number,
+    name: string,
+    id_state: number,
+  }
+  type EntityType = {
+    id: number,
+    name: string,
+  }
+  const [userData, setUserData] = useState<CreateUserFormData>();
+  const [entities, setEntities] = useState<EntityType[]>([]);
   const [isDeficient, setIsDeficient] = useState(false);
   const [needsAdaptation, setNeedsAdaptation] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
@@ -95,15 +102,12 @@ export default function Form() {
       try {
         // Realiza a requisição GET
         const response = await fetch(`${apiBaseUrl}/states/`);
-
         // Verifica se a requisição foi bem-sucedida
         if (!response.ok) {
           throw new Error(`HTTP status ${response.status}`);
         }
-
         // Converte a resposta para JSON
         const data = await response.json();
-
         // Atualiza o estado
         setStates(data);
       } catch (error) {
@@ -111,8 +115,20 @@ export default function Form() {
         setError(error.message);
       }
     }
-
+    const loadEntities = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/entities/`);
+        if (!response.ok) {
+          throw new Error(`HTTP status ${response.status}`);
+        }
+        const data = await response.json();
+        setEntities(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
     loadStates();
+    loadEntities();
   }, []);
 
   useEffect(() => {
@@ -122,58 +138,79 @@ export default function Form() {
         setCities([]);
         return;
       }
-
       try {
         const response = await fetch(`${apiBaseUrl}/states/${selectedStateId}/cities/`);
-
         if (!response.ok) {
           throw new Error(`HTTP status ${response.status}`);
         }
-
         const data = await response.json();
-
+        console.log(data);
         setCities(data);
       } catch (error) {
         setError(error.message);
       }
     }
-
     loadCities();
   }, [selectedStateId]);  // Este useEffect é acionado sempre que selectedStateId muda.
 
   const handleStateChange = (event) => {
-    const selectedId = event.target.value;
-    
-    const selectedItem = states.find(item => item.id.toString() === selectedId).name;
+    const stateId = event.target.value;
+    setSelectedStateId(stateId);
+  };
 
-    console.log(selectedId);
-    if (selectedItem) {
-      setValue("state", selectedItem, {shouldValidate: true});
-    } else {
-      setValue("state", "", {shouldValidate: true});
+  const createUser = async () => {
+    console.log("sending data")
+    console.log(userData);
+    let disabledDescription = "Nada"
+    let adaptationDescription = "Nada"
+    if (userData.is_disabled) {
+      disabledDescription = userData.disabled_description;
     }
-
-    setSelectedStateId(selectedId);
-  };
-
-  const handleProfessionChange = (event) => {
-    const profession = event.target.value;
-    setValue("profession", profession, {shouldValidate: true});
-    setSelectedProfession(profession);
-  };
-
-  const createUser = (data) => {
-    console.log(data);
+    if (userData.needs_adaptation) {
+      adaptationDescription = userData.adaptation_description;
+    }
+    const consolidatedData = {
+      cpf: userData.cpf,
+      email: userData.email,
+      full_name: userData.full_name,
+      birth_date: userData.birth_date,
+      id_state: userData.id_state,
+      //id_city: idCity,
+      id_city: userData.id_city,
+      id_entity: userData.id_entity,
+      entity_description: userData.entity_description,
+      is_disabled: userData.is_disabled,
+      disabled_description: disabledDescription,
+      needs_adaptation: userData.needs_adaptation,
+      adaptation_description: adaptationDescription
+    };
+    console.log(consolidatedData);
+    try {
+      const response = await fetch(`${apiBaseUrl}/users/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(consolidatedData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP status ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
     <div className="content-container flex-col">
-      <div className="py-8">
+      <div className="py-8 px-8">
         <FormTitle>Inscrição</FormTitle>
       </div>
 
-      <form onSubmit={handleSubmit(createUser)} className="flex flex-col">
-        <div className="flex flex-col md:flex-row gap-y-4 gap-x-4 mb-8">
+      <form onSubmit={handleSubmit(setUserData)} className="flex flex-col">
+        <div className="flex flex-col md:flex-row gap-y-4cidade gap-x-16 mb-8">
           <div className="flex flex-col gap-4 flex-1 px-8">
             <div>
               <div className="mb-2 block">
@@ -182,10 +219,10 @@ export default function Form() {
               <TextInput
                 type="text"
                 placeholder="Insira seu nome"
-                {...register("name")}
+                {...register("full_name")}
               />
               {/* se existir um erro para esse campo --> mostrar mensagem de erro */}
-              {errors.name && <span>{errors.name.message}</span>}
+              {errors.full_name && <span>{errors.full_name.message}</span>}
             </div>
 
             <div>
@@ -216,10 +253,10 @@ export default function Form() {
               <div className="mb-2 block">
                 <Label htmlFor="birthdate" value="Data de Nascimento:" />
               </div>
-              <TextInput type="date" {...register("birthdate")} />
+              <TextInput type="date" {...register("birth_date")} />
 
-              {errors.birthdate && (
-                <span className="">{errors.birthdate.message}</span>
+              {errors.birth_date && (
+                <span className="">{errors.birth_date.message}</span>
               )}
             </div>
 
@@ -229,19 +266,21 @@ export default function Form() {
                   <Label htmlFor="state" value="Estado:" />
                 </div>
                 <Select 
-                  id="state" 
-                  defaultValue=""
+                  id="estado" 
+                  {...register("id_state")}
                   onChange={handleStateChange}
                 >
-                  <option value="">Selecione</option>
-                  {states.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
+                  <option disabled={true}>Selecione</option>
+                  {states.map((state) => (
+                    <option key={state.id} value={state.id}>
+                      {state.name}
                     </option>
                   ))}
                 </Select>
-                {errors.state && (
-                  <span className="">{errors.state.message}</span>
+                {errors.id_state && (
+                  <span className="">
+                    {errors.id_state.message}
+                  </span>
                 )}
               </div>
 
@@ -250,96 +289,118 @@ export default function Form() {
                   <Label htmlFor="city" value="Cidade:" />
                 </div>
                 <Select 
-                  id="city" 
-                  {...register("city")} 
+                  id="cidade" 
+                  {...register("id_city")}
                 >
-                  <option value="">Selecione</option>
+                  <option disabled={true}>Selecione</option>
                   {cities.map((city) => (
                     <option key={city.id} value={city.name}>
                       {city.name}
                     </option>
                   ))}
                 </Select>
-                {errors.city && (<span className="">{errors.city.message}</span>)}
+                {errors.id_city && (
+                  <span className="">
+                    {errors.id_city.message}
+                  </span>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Container da segunda coluna do formulário */}
           <div className="flex flex-col gap-4 flex-1 px-8">
+            {/* Container para input de cidade e estado */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="profession" value="Profissão:" />
+                <Label htmlFor="id_entity" value="Entidade:" />
               </div>
               <Select
-                id="profession" 
-                defaultValue=""
-                onChange={handleProfessionChange}
+                id="id_entity"
+                {...register("id_entity")} 
               >
-                <option value="">Selecione</option>
-                <option>Estudante</option>
-                <option>Professor</option>
-                <option>Coordenador</option>
-                <option value=" ">Outro</option>
+                <option disabled={true}>Selecione</option>
+                {entities.map((entity) => (
+                  <option key={entity.id} value={entity.id}>
+                    {entity.name}
+                  </option>
+                ))}
               </Select>
+              {
+                errors.id_entity && <span>{errors.id_entity.message}</span>
+              }
             </div>
 
             <div>
-              <Label htmlFor="profession" value="Especificação da profissão:" />
+              <div className="mb-2 block">
+                <Label htmlFor="Especificação" value="Especificação:" />
+              </div>
               <TextInput
                 type="text"
-                placeholder="Especifique"
-                {...register("profession")}
-                disabled={!(selectedProfession == " ")}
+                placeholder="Especifique a entidade/órgão"
+                {...register("entity_description")}
               />
-
-              {errors.profession && (<span className="">{errors.profession.message}</span>)}
+              {
+                errors.entity_description && <span>{errors.entity_description.message}</span>
+              }
             </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="accept"
-                  checked={isDeficient}
-                  onChange={(e) => setIsDeficient(e.target.checked)}
-                />
-                <Label htmlFor="accept" className="flex">
-                  Deficiente
-                </Label>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="isDeficient" value="Deficiente:" />
               </div>
-
-              <div>
+              <div className="flex items-center gap-4"> 
+                <Checkbox
+                  id="isDeficient"
+                  checked={isDeficient}
+                  {...register("is_disabled")}
+                  onChange={(e) => setIsDeficient(e.target.checked)}
+                  className="w-10 h-10 text-[#3c06a4] rounded-lg"
+                />
                 <TextInput
                   type="text"
                   placeholder="Especifique a deficiência"
+                  defaultValue={""}
+                  {...register("disabled_description")}
                   disabled={!isDeficient}
-                  {...register("deficiency")}
+                  className="w-full"
                 />
+                {
+                  errors.is_disabled && <span>{errors.is_disabled.message}</span>
+                }
+                {
+                  errors.disabled_description && <span>{errors.disabled_description.message}</span>
+                }
               </div>
             </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id="accept"
-                  checked={needsAdaptation}
-                  onChange={(e) => setNeedsAdaptation(e.target.checked)}
-                />
-                <Label htmlFor="accept" className="flex">
-                  Necessito de assistência
-                </Label>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="needsAdaptation" value="Necessita de adaptação:" />
               </div>
-
-              <div>
+              <div className="flex items-center gap-4">
+                <Checkbox
+                  id="needsAdaptation"
+                  checked={needsAdaptation}
+                  {...register("needs_adaptation")}
+                  onChange={(e) => setNeedsAdaptation(e.target.checked)}
+                  className="w-10 h-10 text-[#3c06a4] rounded-lg"
+                />
                 <TextInput
                   type="text"
-                  placeholder="Especifique o tipo de assistência"
+                  placeholder="Especifique a adaptação"
+                  defaultValue={""}
+                  {...register("adaptation_description")}
                   disabled={!needsAdaptation}
-                  {...register("adaptation")}
+                  className="w-full"
                 />
+                {
+                  errors.needs_adaptation && <span>{errors.needs_adaptation.message}</span>
+                }
+                {
+                  errors.adaptation_description && <span>{errors.adaptation_description.message}</span>
+                }
               </div>
             </div>
           </div>
+          {error && <span className="text-red-500">{error}</span>}
         </div>
 
         <div className="px-8 py-2">
@@ -358,16 +419,62 @@ export default function Form() {
         <Modal.Header>Confirme seus dados</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
-            <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400 pb-6 border-b">
-              <span><span className="text-black">Nome: </span> {watchedValues.name}</span>
-              <span><span className="text-black">Email: </span> {watchedValues.email}</span>
-              <span><span className="text-black">Nome: </span> {watchedValues.cpf}</span>
-              <span><span className="text-black">Data de Nascimento: </span> {watchedValues.birthdate}</span>
-              <span><span className="text-black">Estado: </span> {watchedValues.state}</span>
-              <span><span className="text-black">Cidade: </span> {watchedValues.city}</span>
-              <span><span className="text-black">Profissão: </span> {watchedValues.profession}</span>
-              <span><span className="text-black">Deficiência: </span> {watchedValues.deficiency}</span>
-              <span><span className="text-black">Assistência: </span> {watchedValues.adaptation}</span>
+            <p>
+              Por favor, confirme os dados abaixo e aceite os termos de serviço
+              para finalizar a inscrição.
+            </p>
+            <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Nome:</span>
+                <span>{userData?.full_name}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">CPF:</span>
+                <span>{userData?.cpf}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Email:</span>
+                <span>{userData?.email}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Data de Nascimento:</span>
+                <span>{userData?.birth_date}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Estado:</span>
+                <span>{
+                  states.find((state) => state.id === userData?.id_state)?.name
+                }</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Cidade:</span>
+                <span>{
+                  //cities.find((city) => city.id === parseInt(userData?.id_city))?.name
+                  cities.find((city) => city.id === userData?.id_city)?.name
+                }</span>
+              </div>
+              <div>
+                <span className="font-bold gap-2">Entidade:</span>
+                <span>{
+                  entities.find((entity) => entity.id === userData?.id_entity)?.name
+                }</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Especificação:</span>
+                <span>{userData?.entity_description}</span>
+              </div>
+              {isDeficient && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">Deficiente:</span>
+                  <span>{userData?.disabled_description}</span>
+                </div>
+              )}
+              {needsAdaptation && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">Necessita de adaptação:</span>
+                  <span>{userData?.adaptation_description}</span>
+                </div>
+              )}
             </div>
 
             <div className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
@@ -383,7 +490,7 @@ export default function Form() {
                     href="#"
                     className="text-cyan-600 hover:underline dark:text-cyan-500"
                   >
-                    termos de uso.
+                    termos de serviço.
                   </a>
                 </Label>
               </div>
@@ -392,7 +499,11 @@ export default function Form() {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => setOpenModal(false)}
+            onClick={() => {
+                createUser();
+                setOpenModal(false);
+              }
+            }
             disabled={!(isValid && isTermsAccepted)}
           >
             Confirmar

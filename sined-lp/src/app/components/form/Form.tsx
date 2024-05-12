@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { Button, Checkbox, Label, Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -7,7 +6,7 @@ import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { FormTitle } from "./FormStyles";
 
-const apiBaseUrl = "https://sined-api-dev-kvgl74sgpa-rj.a.run.app";
+const apiBaseUrl = "http://sined-api-c:3000";
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
@@ -37,16 +36,18 @@ const createUserFormSchema = z.object({
     .string()
     .min(10, "Insira sua data de nascimento.")
     .date(),
-  cidade: z.string().min(1, "Selecione a sua cidade"),
-  estado: z.string().min(1, "Selecione o seu estado"),
-  poder: z.string().min(1, "Selecione um poder"),
-  especificacao: z.string().min(1, "Insira uma especificação"),
+  estado: z.string().min(0, "Selecione um estado"),
+  cidade: z.string().min(0, "Selecione uma cidade"),
+  entidade: z.string().min(0, "Selecione uma entidade"),
+  especificacao: z.string().min(1, "Especifique a entidade/órgão"),
+  isDeficient: z.boolean(),
+  deficient_description: z.string().min(0, "Especifique a deficiência").optional(),
+  needsAdaptation: z.boolean(),
+  adaptation_description: z.string().min(0, "Especifique a adaptação").optional(),
 });
 
 // Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
-
-
 
 export default function Form() {
   type StateType = {
@@ -58,6 +59,11 @@ export default function Form() {
     "name": string,
     "id_state": string,
   }
+  type EntityType = {
+    "id": string,
+    "name": string,
+  }
+  const [entities, setEntities] = useState<EntityType[]>([]);
   const [isDeficient, setIsDeficient] = useState(false);
   const [needsAdaptation, setNeedsAdaptation] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
@@ -89,15 +95,12 @@ export default function Form() {
       try {
         // Realiza a requisição GET
         const response = await fetch(`${apiBaseUrl}/states/`);
-
         // Verifica se a requisição foi bem-sucedida
         if (!response.ok) {
           throw new Error(`HTTP status ${response.status}`);
         }
-
         // Converte a resposta para JSON
         const data = await response.json();
-
         // Atualiza o estado
         setStates(data);
       } catch (error) {
@@ -105,8 +108,20 @@ export default function Form() {
         setError(error.message);
       }
     }
-
+    const loadEntities = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/entities/`);
+        if (!response.ok) {
+          throw new Error(`HTTP status ${response.status}`);
+        }
+        const data = await response.json();
+        setEntities(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
     loadStates();
+    loadEntities();
   }, []);
 
   useEffect(() => {
@@ -116,22 +131,17 @@ export default function Form() {
         setCities([]);
         return;
       }
-
       try {
         const response = await fetch(`${apiBaseUrl}/states/${selectedStateId}/cities/`);
-
         if (!response.ok) {
           throw new Error(`HTTP status ${response.status}`);
         }
-
         const data = await response.json();
-
         setCities(data);
       } catch (error) {
         setError(error.message);
       }
     }
-
     loadCities();
   }, [selectedStateId]);  // Este useEffect é acionado sempre que selectedStateId muda.
 
@@ -146,7 +156,7 @@ export default function Form() {
 
   return (
     <div className="content-container flex-col">
-      <div className="py-8">
+      <div className="py-8 px-8">
         <FormTitle>Inscrição</FormTitle>
       </div>
 
@@ -200,10 +210,7 @@ export default function Form() {
                 <span className="">{errors.nascimento.message}</span>
               )}
             </div>
-          </div>
 
-          <div className="flex flex-col gap-4 flex-1 px-8">
-            {/* Container para input de cidade e estado */}
             <div className="flex gap-8">
               <div className="flex-1">
                 <div className="mb-2 block">
@@ -211,14 +218,13 @@ export default function Form() {
                 </div>
                 <Select 
                   id="estado" 
-                  {...register("estado")} 
-                  defaultValue={0}
+                  {...register("estado")}
                   onChange={handleStateChange}
                 >
-                  <option value="">Selecione</option>
-                  {states.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
+                  <option disabled={true}>Selecione</option>
+                  {states.map((state) => (
+                    <option key={state.id} value={state.id}>
+                      {state.name}
                     </option>
                   ))}
                 </Select>
@@ -234,9 +240,8 @@ export default function Form() {
                 <Select 
                   id="cidade" 
                   {...register("cidade")} 
-                  defaultValue={0}
                 >
-                  <option value="">Selecione</option>
+                  <option disabled={true}>Selecione</option>
                   {cities.map((city) => (
                     <option key={city.id} value={city.id}>
                       {city.name}
@@ -248,27 +253,78 @@ export default function Form() {
                 )}
               </div>
             </div>
+          </div>
 
+          <div className="flex flex-col gap-4 flex-1 px-8">
+            {/* Container para input de cidade e estado */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="poder" value="Poder:" />
+                <Label htmlFor="entidade" value="Entidade:" />
               </div>
-              <Select id="poder" {...register("poder")} defaultValue={""}>
-                <option> </option>
-                <option>Estudante</option>
-                <option>Professor</option>
-                <option>Coordenador</option>
-                <option>Outro</option>
+              <Select
+                id="entidade"
+                {...register("entidade")} 
+              >
+                <option disabled={true}>Selecione</option>
+                {entities.map((entity) => (
+                  <option key={entity.id} value={entity.id}>
+                    {entity.name}
+                  </option>
+                ))}
               </Select>
             </div>
 
             <div>
-              <Label htmlFor="Especificação" value="Especificação:" />
+              <div className="mb-2 block">
+                <Label htmlFor="Especificação" value="Especificação:" />
+              </div>
               <TextInput
                 type="text"
-                placeholder="Especifique"
+                placeholder="Especifique a entidade/órgão"
                 {...register("especificacao")}
               />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="isDeficient" value="Deficiente:" />
+              </div>
+              <div className="flex items-center gap-4"> 
+                <Checkbox
+                  id="isDeficient"
+                  checked={isDeficient}
+                  {...register("isDeficient")}
+                  onChange={(e) => setIsDeficient(e.target.checked)}
+                  className="w-10 h-10 text-[#3c06a4] rounded-lg"
+                />
+                <TextInput
+                  type="text"
+                  placeholder="Especifique a deficiência"
+                  {...register("deficient_description")}
+                  disabled={!isDeficient}
+                  className="w-full"
+                />
+              </div>
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="needsAdaptation" value="Necessita de adaptação:" />
+              </div>
+              <div className="flex items-center gap-4">
+                <Checkbox
+                  id="needsAdaptation"
+                  checked={needsAdaptation}
+                  {...register("needsAdaptation")}
+                  onChange={(e) => setNeedsAdaptation(e.target.checked)}
+                  className="w-10 h-10 text-[#3c06a4] rounded-lg"
+                />
+                <TextInput
+                  type="text"
+                  placeholder="Especifique a adaptação"
+                  {...register("adaptation_description")}
+                  disabled={!needsAdaptation}
+                  className="w-full"
+                />
+              </div>
             </div>
           </div>
         </div>

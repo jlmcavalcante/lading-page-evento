@@ -38,23 +38,23 @@ const About: React.FC = () => {
                        O evento é destaque na agenda educacional nacional e apoiado por várias instituições, incluindo a Associação dos Membros dos Tribunais de Contas do Brasil (Atricon), o Conselho Nacional dos Presidentes dos Tribunais de Contas (CNPTC), a Associação Brasileira dos Tribunais de Contas dos Municípios (ABRACOM), a Associação Nacional do Ministério Público de Contas (AMPCON) e a Associação Nacional dos Ministros e Conselheiros Substitutos dos Tribunais de Contas (AUDICON). As inscrições serão gratuitas. Todos os interessados são convidados a participar.
                     </InfoText>
                 </div>
-                <div>
-                    <InfoItem>
-                        <span>
-                            <FaCalendarAlt />
-                        </span>
-                        <span>Data: </span>
-                        <span>4 a 6 - Junho</span>
-                    </InfoItem>
+                <div className="mt-4 md:mt-1">
                     <InfoItem>
                         <span>
                             <FaMapMarkerAlt />
                         </span>
                         <span>Local: </span>
-                        <span>Teatro SESC Cajuína - Teresina</span>
+                        <span className="max-md:text-sm">Teatro SESC Cajuína - Teresina</span>
+                    </InfoItem>
+                    <InfoItem>
+                        <span>
+                            <FaCalendarAlt />
+                        </span>
+                        <span>Data: </span>
+                        <span className="max-md:text-sm">4 a 6 - Junho</span>
                     </InfoItem>
                 </div>
-                <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4">
+                <div className="flex flex-col mt-4 md:mt-2 gap-y-8 md:flex-row md:gap-x-4">
                     <Button to="subscribe" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
                         Realizar Inscrição
                     </Button>

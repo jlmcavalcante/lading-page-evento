@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { FormTitle } from "./FormStyles";
 
-const apiBaseUrl = "sined-api-c";
+const apiBaseUrl = "https://sined-api-dev-kvgl74sgpa-rj.a.run.app";
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
@@ -88,7 +88,7 @@ export default function Form() {
     const loadStates = async () => {
       try {
         // Realiza a requisição GET
-        const response = await fetch("https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/");
+        const response = await fetch(`${apiBaseUrl}/states/`);
 
         // Verifica se a requisição foi bem-sucedida
         if (!response.ok) {
@@ -118,7 +118,7 @@ export default function Form() {
       }
 
       try {
-        const response = await fetch(`https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/${selectedStateId}/cities/`);
+        const response = await fetch(`${apiBaseUrl}/states/${selectedStateId}/cities/`);
 
         if (!response.ok) {
           throw new Error(`HTTP status ${response.status}`);

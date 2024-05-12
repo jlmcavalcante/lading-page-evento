@@ -7,6 +7,8 @@ import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { FormTitle } from "./FormStyles";
 
+const apiBaseUrl = "sined-api-c";
+
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
   name: z
@@ -44,17 +46,20 @@ const createUserFormSchema = z.object({
 // Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
-type StateType = {
-  "id": string,
-  "name": string,
-}
-type CityType = {
-  "id": string,
-  "name": string,
-  "id_state": string,
-}
+
 
 export default function Form() {
+  type StateType = {
+    "id": string,
+    "name": string,
+  }
+  type CityType = {
+    "id": string,
+    "name": string,
+    "id_state": string,
+  }
+  const [isDeficient, setIsDeficient] = useState(false);
+  const [needsAdaptation, setNeedsAdaptation] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [states, setStates] = useState<StateType[]>([]);

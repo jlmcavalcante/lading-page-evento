@@ -106,6 +106,23 @@ export const Button = styled(LinkScroll)`
     }
 `;
 
+export const ButtonLink = styled.a`
+    color: white;
+    padding: 1rem 1.25rem;
+    background: var(--color-primary);
+    border: none;
+    border-radius: 10px;
+    transition: all 0.2s;
+    width: 16rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+    &:hover {
+        cursor: pointer;
+        background: var(--color-primary-dark);
+    }
+`;
+
 export const CardsContainer = styled.div`
     height: 50%;
     display: grid;

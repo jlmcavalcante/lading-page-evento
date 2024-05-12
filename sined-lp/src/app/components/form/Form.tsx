@@ -51,16 +51,16 @@ type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export default function Form() {
   type StateType = {
-    "id": string,
+    "id": number,
     "name": string,
   }
   type CityType = {
-    "id": string,
+    "id": number,
     "name": string,
-    "id_state": string,
+    "id_state": number,
   }
   type EntityType = {
-    "id": string,
+    "id": number,
     "name": string,
   }
   const [userData, setUserData] = useState<CreateUserFormData>();

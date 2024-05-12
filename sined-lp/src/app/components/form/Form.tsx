@@ -41,17 +41,6 @@ const createUserFormSchema = z.object({
   especificacao: z.string().min(1, "Insira uma especificação"),
 });
 
-function todosAtributosPreenchidos(obj: any): boolean {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      if (obj[key] === null || obj[key] === undefined) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
 // Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
@@ -70,10 +59,10 @@ export default function Form() {
   const [openModal, setOpenModal] = useState(false);
   const [states, setStates] = useState<StateType[]>([]);
   const [cities, setCities] = useState<CityType[]>([]);
-  const [selectedState, setselectedState] = useState<StateType>();
-
-
-  function createUser(data: any) {}
+  // Armazenar o estado selecionado
+  const [selectedStateId, setSelectedStateId] = useState(null);
+  // Controlar erros na requisição
+  const [error, setError] = useState(null);
 
   const {
     register,
@@ -87,43 +76,68 @@ export default function Form() {
   });
 
   const watchedValues = watch();
-
-  useEffect(()=>{
-    const getStates = async () => {
-      try {
-        const response = await axios.get("https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states");
-        setStates(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };    
-    
-    const getCities = async () => {
-      try {
-        const response = await axios.get(`https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/${selectedState!.id}/cities`);
-        setCities(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getStates();
-    if(selectedState) {
-      getCities();
-    };
-  })
-
-  const postUser = async () => {
-    try {
-      const response = await axios.post("https://url.com/post", {
-        // Adicionar objeto aqui.
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };  
+  // "https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states"
+  // `https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/${selectedState!.id}/cities`
   
+  useEffect(()=>{
+    const loadStates = async () => {
+      try {
+        // Realiza a requisição GET
+        const response = await fetch("https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/");
 
+        // Verifica se a requisição foi bem-sucedida
+        if (!response.ok) {
+          throw new Error(`HTTP status ${response.status}`);
+        }
+
+        // Converte a resposta para JSON
+        const data = await response.json();
+
+        // Atualiza o estado
+        setStates(data);
+      } catch (error) {
+        // Atualiza o estado de erro, se houver.
+        setError(error.message);
+      }
+    }
+
+    loadStates();
+  }, []);
+
+  useEffect(() => {
+    const loadCities = async () => {
+      if(!selectedStateId) {
+        // Se não houver selectedStateId, não tente carregar as cidades
+        setCities([]);
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/${selectedStateId}/cities/`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP status ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        setCities(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+
+    loadCities();
+  }, [selectedStateId]);  // Este useEffect é acionado sempre que selectedStateId muda.
+
+  const handleStateChange = (event) => {
+    const stateId = event.target.value;
+    setSelectedStateId(stateId);
+  };
+
+  const createUser = (data) => {
+    console.log(data);
+  }
 
   return (
     <div className="content-container flex-col">
@@ -190,10 +204,17 @@ export default function Form() {
                 <div className="mb-2 block">
                   <Label htmlFor="estado" value="Estado:" />
                 </div>
-                <Select id="estado" {...register("estado")} defaultValue={0}>
-                  <option> </option>
-                  {states.map(item => (
-                    <option key={item.id} value={item.id}>{item.name}</option>
+                <Select 
+                  id="estado" 
+                  {...register("estado")} 
+                  defaultValue={0}
+                  onChange={handleStateChange}
+                >
+                  <option value="">Selecione</option>
+                  {states.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
                   ))}
                 </Select>
                 {errors.estado && (
@@ -205,10 +226,16 @@ export default function Form() {
                 <div className="mb-2 block">
                   <Label htmlFor="cidade" value="Cidade:" />
                 </div>
-                <Select id="cidade" {...register("cidade")} defaultValue={0}>
-                  <option> </option>
-                  {cities.map(city => (
-                    <option key={city.id} value={city.id}>{city.name}</option>
+                <Select 
+                  id="cidade" 
+                  {...register("cidade")} 
+                  defaultValue={0}
+                >
+                  <option value="">Selecione</option>
+                  {cities.map((city) => (
+                    <option key={city.id} value={city.id}>
+                      {city.name}
+                    </option>
                   ))}
                 </Select>
                 {errors.cidade && (
@@ -229,7 +256,7 @@ export default function Form() {
                 <option>Outro</option>
               </Select>
             </div>
-            
+
             <div>
               <Label htmlFor="Especificação" value="Especificação:" />
               <TextInput

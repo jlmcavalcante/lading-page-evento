@@ -138,6 +138,7 @@ export default function Form() {
           throw new Error(`HTTP status ${response.status}`);
         }
         const data = await response.json();
+        console.log(data);
         setCities(data);
       } catch (error) {
         setError(error.message);
@@ -189,7 +190,7 @@ export default function Form() {
       </div>
 
       <form onSubmit={handleSubmit(setUserData)} className="flex flex-col">
-        <div className="flex flex-col md:flex-row gap-y-4 gap-x-16 mb-8">
+        <div className="flex flex-col md:flex-row gap-y-4cidade gap-x-16 mb-8">
           <div className="flex flex-col gap-4 flex-1 px-8">
             <div>
               <div className="mb-2 block">
@@ -257,7 +258,9 @@ export default function Form() {
                   ))}
                 </Select>
                 {errors.id_state && (
-                  <span className="">{errors.id_state.message}</span>
+                  <span className="">
+                    {errors.id_state.message}
+                  </span>
                 )}
               </div>
 
@@ -273,11 +276,15 @@ export default function Form() {
                   {cities.map((city) => (
                     <option key={city.id} value={city.id}>
                       {city.name}
+                      {city.id}
+                      {typeof city.id}
                     </option>
                   ))}
                 </Select>
                 {errors.id_city && (
-                  <span className="">{errors.id_city.message}</span>
+                  <span className="">
+                    {errors.id_city.message}
+                  </span>
                 )}
               </div>
             </div>

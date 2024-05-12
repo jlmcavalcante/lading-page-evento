@@ -9,6 +9,16 @@ import { FormTitle } from "./FormStyles";
 
 const apiBaseUrl = "https://sined-api-dev-kvgl74sgpa-rj.a.run.app";
 
+type StateType = {
+  "id": string,
+  "name": string,
+}
+type CityType = {
+  "id": string,
+  "name": string,
+  "id_state": string,
+}
+
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
   name: z
@@ -33,45 +43,41 @@ const createUserFormSchema = z.object({
     .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
     .email("Formato de e-mail inválido") // Validação de email.
     .toLowerCase(),
-  nascimento: z.coerce
+  birthdate: z.coerce
     .string()
     .min(10, "Insira sua data de nascimento.")
     .date(),
-  cidade: z.string().min(1, "Selecione a sua cidade"),
-  estado: z.string().min(1, "Selecione o seu estado"),
-  poder: z.string().min(1, "Selecione um poder"),
-  especificacao: z.string().min(1, "Insira uma especificação"),
+  city: z.string().min(1, "Selecione a sua cidade"),
+  state: z.string().min(1, "Selecione o seu estado"),
+  profession: z.string()
+    .min(2, "Indique a sua profissão")
+    .transform((prof) => {
+      return prof
+        .trim()
+        .toLowerCase()
+    }),
+  deficiency: z.string().optional(),
+  adaptation: z.string().optional(),
 });
 
-// Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
-
-
 export default function Form() {
-  type StateType = {
-    "id": string,
-    "name": string,
-  }
-  type CityType = {
-    "id": string,
-    "name": string,
-    "id_state": string,
-  }
+  // Estados da aplicação:
   const [isDeficient, setIsDeficient] = useState(false);
   const [needsAdaptation, setNeedsAdaptation] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [states, setStates] = useState<StateType[]>([]);
   const [cities, setCities] = useState<CityType[]>([]);
-  // Armazenar o estado selecionado
-  const [selectedStateId, setSelectedStateId] = useState(null);
-  // Controlar erros na requisição
-  const [error, setError] = useState(null);
+  const [selectedStateId, setSelectedStateId] = useState(null);  // Armazenar o estado selecionado
+  const [selectedProfession, setSelectedProfession] = useState(null);  // Armazenar a profissão selecionada
+  const [error, setError] = useState(null);  // Controlar erros na requisição
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
     watch,
   } = useForm<CreateUserFormData>({
@@ -136,8 +142,24 @@ export default function Form() {
   }, [selectedStateId]);  // Este useEffect é acionado sempre que selectedStateId muda.
 
   const handleStateChange = (event) => {
-    const stateId = event.target.value;
-    setSelectedStateId(stateId);
+    const selectedId = event.target.value;
+    
+    const selectedItem = states.find(item => item.id.toString() === selectedId).name;
+
+    console.log(selectedId);
+    if (selectedItem) {
+      setValue("state", selectedItem, {shouldValidate: true});
+    } else {
+      setValue("state", "", {shouldValidate: true});
+    }
+
+    setSelectedStateId(selectedId);
+  };
+
+  const handleProfessionChange = (event) => {
+    const profession = event.target.value;
+    setValue("profession", profession, {shouldValidate: true});
+    setSelectedProfession(profession);
   };
 
   const createUser = (data) => {
@@ -151,7 +173,7 @@ export default function Form() {
       </div>
 
       <form onSubmit={handleSubmit(createUser)} className="flex flex-col">
-        <div className="flex flex-col md:flex-row gap-y-4 gap-x-16 mb-8">
+        <div className="flex flex-col md:flex-row gap-y-4 gap-x-4 mb-8">
           <div className="flex flex-col gap-4 flex-1 px-8">
             <div>
               <div className="mb-2 block">
@@ -192,27 +214,23 @@ export default function Form() {
 
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="nascimento" value="Data de Nascimento:" />
+                <Label htmlFor="birthdate" value="Data de Nascimento:" />
               </div>
-              <TextInput type="date" {...register("nascimento")} />
+              <TextInput type="date" {...register("birthdate")} />
 
-              {errors.nascimento && (
-                <span className="">{errors.nascimento.message}</span>
+              {errors.birthdate && (
+                <span className="">{errors.birthdate.message}</span>
               )}
             </div>
-          </div>
 
-          <div className="flex flex-col gap-4 flex-1 px-8">
-            {/* Container para input de cidade e estado */}
             <div className="flex gap-8">
               <div className="flex-1">
                 <div className="mb-2 block">
-                  <Label htmlFor="estado" value="Estado:" />
+                  <Label htmlFor="state" value="Estado:" />
                 </div>
                 <Select 
-                  id="estado" 
-                  {...register("estado")} 
-                  defaultValue={0}
+                  id="state" 
+                  defaultValue=""
                   onChange={handleStateChange}
                 >
                   <option value="">Selecione</option>
@@ -222,53 +240,104 @@ export default function Form() {
                     </option>
                   ))}
                 </Select>
-                {errors.estado && (
-                  <span className="">{errors.estado.message}</span>
+                {errors.state && (
+                  <span className="">{errors.state.message}</span>
                 )}
               </div>
 
               <div className="flex-1">
                 <div className="mb-2 block">
-                  <Label htmlFor="cidade" value="Cidade:" />
+                  <Label htmlFor="city" value="Cidade:" />
                 </div>
                 <Select 
-                  id="cidade" 
-                  {...register("cidade")} 
-                  defaultValue={0}
+                  id="city" 
+                  {...register("city")} 
                 >
                   <option value="">Selecione</option>
                   {cities.map((city) => (
-                    <option key={city.id} value={city.id}>
+                    <option key={city.id} value={city.name}>
                       {city.name}
                     </option>
                   ))}
                 </Select>
-                {errors.cidade && (
-                  <span className="">{errors.cidade.message}</span>
-                )}
+                {errors.city && (<span className="">{errors.city.message}</span>)}
               </div>
             </div>
+          </div>
 
+          {/* Container da segunda coluna do formulário */}
+          <div className="flex flex-col gap-4 flex-1 px-8">
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="poder" value="Poder:" />
+                <Label htmlFor="profession" value="Profissão:" />
               </div>
-              <Select id="poder" {...register("poder")} defaultValue={""}>
-                <option> </option>
+              <Select
+                id="profession" 
+                defaultValue=""
+                onChange={handleProfessionChange}
+              >
+                <option value="">Selecione</option>
                 <option>Estudante</option>
                 <option>Professor</option>
                 <option>Coordenador</option>
-                <option>Outro</option>
+                <option value=" ">Outro</option>
               </Select>
             </div>
 
             <div>
-              <Label htmlFor="Especificação" value="Especificação:" />
+              <Label htmlFor="profession" value="Especificação da profissão:" />
               <TextInput
                 type="text"
                 placeholder="Especifique"
-                {...register("especificacao")}
+                {...register("profession")}
+                disabled={!(selectedProfession == " ")}
               />
+
+              {errors.profession && (<span className="">{errors.profession.message}</span>)}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="accept"
+                  checked={isDeficient}
+                  onChange={(e) => setIsDeficient(e.target.checked)}
+                />
+                <Label htmlFor="accept" className="flex">
+                  Deficiente
+                </Label>
+              </div>
+
+              <div>
+                <TextInput
+                  type="text"
+                  placeholder="Especifique a deficiência"
+                  disabled={!isDeficient}
+                  {...register("deficiency")}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="accept"
+                  checked={needsAdaptation}
+                  onChange={(e) => setNeedsAdaptation(e.target.checked)}
+                />
+                <Label htmlFor="accept" className="flex">
+                  Necessito de assistência
+                </Label>
+              </div>
+
+              <div>
+                <TextInput
+                  type="text"
+                  placeholder="Especifique o tipo de assistência"
+                  disabled={!needsAdaptation}
+                  {...register("adaptation")}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -286,17 +355,21 @@ export default function Form() {
       </form>
 
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header>Termos de Serviço</Modal.Header>
+        <Modal.Header>Confirme seus dados</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
-            <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400">
-              <span>{watchedValues.name}</span>
-              <span>{watchedValues.email}</span>
-              <span>{watchedValues.cpf}</span>
-              <span>{watchedValues.nascimento}</span>
-              <span>{watchedValues.estado}</span>
-              <span>{watchedValues.cidade}</span>
+            <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400 pb-6 border-b">
+              <span><span className="text-black">Nome: </span> {watchedValues.name}</span>
+              <span><span className="text-black">Email: </span> {watchedValues.email}</span>
+              <span><span className="text-black">Nome: </span> {watchedValues.cpf}</span>
+              <span><span className="text-black">Data de Nascimento: </span> {watchedValues.birthdate}</span>
+              <span><span className="text-black">Estado: </span> {watchedValues.state}</span>
+              <span><span className="text-black">Cidade: </span> {watchedValues.city}</span>
+              <span><span className="text-black">Profissão: </span> {watchedValues.profession}</span>
+              <span><span className="text-black">Deficiência: </span> {watchedValues.deficiency}</span>
+              <span><span className="text-black">Assistência: </span> {watchedValues.adaptation}</span>
             </div>
+
             <div className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -310,7 +383,7 @@ export default function Form() {
                     href="#"
                     className="text-cyan-600 hover:underline dark:text-cyan-500"
                   >
-                    termos de.
+                    termos de uso.
                   </a>
                 </Label>
               </div>

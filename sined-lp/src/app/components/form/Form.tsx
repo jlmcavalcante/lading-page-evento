@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { FormTitle } from "./FormStyles";
 
-const apiBaseUrl = "http://172.16.80.28:3000/api";
+const apiBaseUrl = "http://sined.tcepi.tc.br/api";
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
@@ -184,16 +184,22 @@ export default function Form() {
       needs_adaptation: userData.needs_adaptation,
       adaptation_description: adaptationDescription
     };
-    const response = await fetch(`${apiBaseUrl}/users/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(consolidatedData),
-    });
-    // Verificar se a requisição foi bem-sucedida
-    if (!response.ok) {
-      throw new Error(`HTTP status ${response.status}`);
+    console.log(consolidatedData);
+    try {
+      const response = await fetch(`${apiBaseUrl}/users/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(consolidatedData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP status ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
     }
   }
 

@@ -36,9 +36,9 @@ const createUserFormSchema = z.object({
     .string()
     .min(10, "Insira sua data de nascimento.")
     .date(),
-  id_state: z.string().min(0, "Selecione um estado"),
-  id_city: z.string().min(0, "Selecione uma cidade"),
-  id_entity: z.string().min(0, "Selecione uma entidade"),
+  id_state: z.number().min(0, "Selecione um estado"),
+  id_city: z.number().min(0, "Selecione uma cidade"),
+  id_entity: z.number().min(0, "Selecione uma entidade"),
   entity_description: z.string().min(1, "Especifique a entidade/órgão"),
   is_disabled: z.boolean(),
   disabled_description: z.string().min(0, "Especifique a deficiência").optional(),
@@ -153,19 +153,21 @@ export default function Form() {
 
   const createUser = async () => {
     console.log(userData);
+    const disabledDescription = isDeficient ? userData.disabled_description : "";
+    const adaptationDescription = needsAdaptation ? userData.adaptation_description : "";
     const consolidatedData = {
       cpf: userData.cpf,
       email: userData.email,
       full_name: userData.full_name,
       birth_date: userData.birth_date,
-      id_state: parseInt(userData.id_state),
-      id_city: parseInt(userData.id_city),
-      id_entity: parseInt(userData.id_entity),
+      id_state: userData.id_state,
+      id_city: userData.id_city,
+      id_entity: userData.id_entity,
       entity_description: userData.entity_description,
       is_disabled: userData.is_disabled,
-      disabled_description: userData.disabled_description || "",
+      disabled_description: disabledDescription,
       needs_adaptation: userData.needs_adaptation,
-      adaptation_description: userData.adaptation_description || "",
+      adaptation_description: adaptationDescription
     };
     const response = await fetch(`${apiBaseUrl}/users/`, {
       method: "POST",

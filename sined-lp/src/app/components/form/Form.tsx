@@ -63,6 +63,7 @@ export default function Form() {
     "id": string,
     "name": string,
   }
+  const [userData, setUserData] = useState<CreateUserFormData>();
   const [entities, setEntities] = useState<EntityType[]>([]);
   const [isDeficient, setIsDeficient] = useState(false);
   const [needsAdaptation, setNeedsAdaptation] = useState(false);
@@ -150,8 +151,20 @@ export default function Form() {
     setSelectedStateId(stateId);
   };
 
-  const createUser = (data) => {
-    console.log(data);
+  const createUser = async () => {
+    console.log(userData);
+    // Enviar os dados para a API
+    const response = await fetch(`${apiBaseUrl}/users/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+    // Verificar se a requisição foi bem-sucedida
+    if (!response.ok) {
+      throw new Error(`HTTP status ${response.status}`);
+    }
   }
 
   return (
@@ -160,7 +173,7 @@ export default function Form() {
         <FormTitle>Inscrição</FormTitle>
       </div>
 
-      <form onSubmit={handleSubmit(createUser)} className="flex flex-col">
+      <form onSubmit={handleSubmit(setUserData)} className="flex flex-col">
         <div className="flex flex-col md:flex-row gap-y-4 gap-x-16 mb-8">
           <div className="flex flex-col gap-4 flex-1 px-8">
             <div>
@@ -345,13 +358,55 @@ export default function Form() {
         <Modal.Header>Termos de Serviço</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
+            <p>
+              Por favor, confirme os dados abaixo e aceite os termos de serviço
+              para finalizar a inscrição.
+            </p>
             <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400">
-              <span>{watchedValues.name}</span>
-              <span>{watchedValues.email}</span>
-              <span>{watchedValues.cpf}</span>
-              <span>{watchedValues.nascimento}</span>
-              <span>{watchedValues.estado}</span>
-              <span>{watchedValues.cidade}</span>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Nome:</span>
+                <span>{userData?.name}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">CPF:</span>
+                <span>{userData?.cpf}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Email:</span>
+                <span>{userData?.email}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Data de Nascimento:</span>
+                <span>{userData?.nascimento}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Estado:</span>
+                <span>{userData?.estado}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Cidade:</span>
+                <span>{userData?.cidade}</span>
+              </div>
+              <div>
+                <span className="font-bold">Entidade:</span>
+                <span>{userData?.entidade}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Especificação:</span>
+                <span>{userData?.especificacao}</span>
+              </div>
+              {isDeficient && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">Deficiente:</span>
+                  <span>{userData?.deficient_description}</span>
+                </div>
+              )}
+              {needsAdaptation && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">Necessita de adaptação:</span>
+                  <span>{userData?.adaptation_description}</span>
+                </div>
+              )}
             </div>
             <div className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-2">
@@ -366,7 +421,7 @@ export default function Form() {
                     href="#"
                     className="text-cyan-600 hover:underline dark:text-cyan-500"
                   >
-                    termos de.
+                    termos de serviço.
                   </a>
                 </Label>
               </div>
@@ -375,7 +430,11 @@ export default function Form() {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            onClick={() => setOpenModal(false)}
+            onClick={() => {
+                createUser(userData);
+                setOpenModal(false);
+              }
+            }
             disabled={!(isValid && isTermsAccepted)}
           >
             Confirmar

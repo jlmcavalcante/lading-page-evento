@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { FormTitle } from "./FormStyles";
 
-const apiBaseUrl = "http://sined-api-c:3000";
+const apiBaseUrl = "http://172.16.80.28:3000";
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({

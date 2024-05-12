@@ -153,13 +153,26 @@ export default function Form() {
 
   const createUser = async () => {
     console.log(userData);
-    // Enviar os dados para a API
+    const consolidatedData = {
+      cpf: userData.cpf,
+      email: userData.email,
+      full_name: userData.full_name,
+      birth_date: userData.birth_date,
+      id_state: parseInt(userData.id_state),
+      id_city: parseInt(userData.id_city),
+      id_entity: parseInt(userData.id_entity),
+      entity_description: userData.entity_description,
+      is_disabled: userData.is_disabled,
+      disabled_description: userData.disabled_description || "",
+      needs_adaptation: userData.needs_adaptation,
+      adaptation_description: userData.adaptation_description || "",
+    };
     const response = await fetch(`${apiBaseUrl}/users/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(consolidatedData),
     });
     // Verificar se a requisição foi bem-sucedida
     if (!response.ok) {

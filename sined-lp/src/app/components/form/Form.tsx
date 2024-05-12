@@ -431,7 +431,7 @@ export default function Form() {
         <Modal.Footer>
           <Button
             onClick={() => {
-                createUser(userData);
+                createUser();
                 setOpenModal(false);
               }
             }

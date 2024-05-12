@@ -36,9 +36,15 @@ const createUserFormSchema = z.object({
     .string()
     .min(10, "Insira sua data de nascimento.")
     .date(),
-  id_state: z.number().min(0, "Selecione um estado"),
-  id_city: z.number().min(0, "Selecione uma cidade"),
-  id_entity: z.number().min(0, "Selecione uma entidade"),
+  id_state: z.string().min(1, "Selecione um estado").transform((value) => {
+    return parseInt(value);
+  }),
+  id_city: z.string().min(1, "Selecione uma cidade").transform((value) => {
+    return parseInt(value);
+  }),
+  id_entity: z.string().min(1, "Selecione uma entidade").transform((value) => {
+    return parseInt(value);
+  }),
   entity_description: z.string().min(1, "Especifique a entidade/órgão"),
   is_disabled: z.boolean(),
   disabled_description: z.string().min(0, "Especifique a deficiência").optional(),
@@ -51,17 +57,17 @@ type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export default function Form() {
   type StateType = {
-    "id": number,
-    "name": string,
+    id: number,
+    name: string,
   }
   type CityType = {
-    "id": number,
-    "name": string,
-    "id_state": number,
+    id: number,
+    name: string,
+    id_state: number,
   }
   type EntityType = {
-    "id": number,
-    "name": string,
+    id: number,
+    name: string,
   }
   const [userData, setUserData] = useState<CreateUserFormData>();
   const [entities, setEntities] = useState<EntityType[]>([]);
@@ -153,15 +159,23 @@ export default function Form() {
   };
 
   const createUser = async () => {
+    console.log("sending data")
     console.log(userData);
-    const disabledDescription = isDeficient ? userData.disabled_description : "";
-    const adaptationDescription = needsAdaptation ? userData.adaptation_description : "";
+    let disabledDescription = "Nada"
+    let adaptationDescription = "Nada"
+    if (userData.is_disabled) {
+      disabledDescription = userData.disabled_description;
+    }
+    if (userData.needs_adaptation) {
+      adaptationDescription = userData.adaptation_description;
+    }
     const consolidatedData = {
       cpf: userData.cpf,
       email: userData.email,
       full_name: userData.full_name,
       birth_date: userData.birth_date,
       id_state: userData.id_state,
+      //id_city: idCity,
       id_city: userData.id_city,
       id_entity: userData.id_entity,
       entity_description: userData.entity_description,
@@ -270,14 +284,12 @@ export default function Form() {
                 </div>
                 <Select 
                   id="cidade" 
-                  {...register("id_city")} 
+                  {...register("id_city")}
                 >
                   <option disabled={true}>Selecione</option>
                   {cities.map((city) => (
                     <option key={city.id} value={city.id}>
                       {city.name}
-                      {city.id}
-                      {typeof city.id}
                     </option>
                   ))}
                 </Select>
@@ -307,6 +319,9 @@ export default function Form() {
                   </option>
                 ))}
               </Select>
+              {
+                errors.id_entity && <span>{errors.id_entity.message}</span>
+              }
             </div>
 
             <div>
@@ -318,6 +333,9 @@ export default function Form() {
                 placeholder="Especifique a entidade/órgão"
                 {...register("entity_description")}
               />
+              {
+                errors.entity_description && <span>{errors.entity_description.message}</span>
+              }
             </div>
             <div>
               <div className="mb-2 block">
@@ -334,10 +352,17 @@ export default function Form() {
                 <TextInput
                   type="text"
                   placeholder="Especifique a deficiência"
+                  defaultValue={""}
                   {...register("disabled_description")}
                   disabled={!isDeficient}
                   className="w-full"
                 />
+                {
+                  errors.is_disabled && <span>{errors.is_disabled.message}</span>
+                }
+                {
+                  errors.disabled_description && <span>{errors.disabled_description.message}</span>
+                }
               </div>
             </div>
             <div>
@@ -355,13 +380,21 @@ export default function Form() {
                 <TextInput
                   type="text"
                   placeholder="Especifique a adaptação"
+                  defaultValue={""}
                   {...register("adaptation_description")}
                   disabled={!needsAdaptation}
                   className="w-full"
                 />
+                {
+                  errors.needs_adaptation && <span>{errors.needs_adaptation.message}</span>
+                }
+                {
+                  errors.adaptation_description && <span>{errors.adaptation_description.message}</span>
+                }
               </div>
             </div>
           </div>
+          {error && <span className="text-red-500">{error}</span>}
         </div>
 
         <div className="px-8 py-2">
@@ -410,6 +443,7 @@ export default function Form() {
               <div className="flex items-center gap-2">
                 <span className="font-bold">Cidade:</span>
                 <span>{
+                  //cities.find((city) => city.id === parseInt(userData?.id_city))?.name
                   cities.find((city) => city.id === userData?.id_city)?.name
                 }</span>
               </div>

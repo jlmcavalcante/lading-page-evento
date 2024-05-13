@@ -74,6 +74,8 @@ export default function Form() {
     id: number,
     name: string,
   }
+  const [sucessOutput, setSucessOutput] = useState(false);  // [1]
+  const [outputModal, setOutputModal] = useState(false);
   const [userData, setUserData] = useState<CreateUserFormData>();
   const [entities, setEntities] = useState<EntityType[]>([]);
   const [isDeficient, setIsDeficient] = useState(false);
@@ -203,6 +205,7 @@ export default function Form() {
       }
       const data = await response.json();
       console.log(data);
+      setSucessOutput(true);
     } catch (error) {
       console.error(error);
     }
@@ -488,7 +491,7 @@ export default function Form() {
                   checked={isTermsAccepted}
                   onChange={(e) => setIsTermsAccepted(e.target.checked)}
                 />
-                <Label htmlFor="accept" className="flex">
+                <Label htmlFor="accept" className="flex flex-row gap-2">
                   Li e concordo com os termos de serviço &nbsp;
                   <a
                     href="#"
@@ -506,6 +509,7 @@ export default function Form() {
             onClick={() => {
                 createUser();
                 setOpenModal(false);
+                setOutputModal(true);
               }
             }
             disabled={!(isValid && isTermsAccepted)}
@@ -517,8 +521,21 @@ export default function Form() {
           </Button>
         </Modal.Footer>
       </Modal>
+      <Modal show={outputModal} onClose={() => setOutputModal(false)}>
+        <Modal.Header>
+          {sucessOutput ? "Usuário criado com sucesso" : "Erro ao criar usuário"}
+        </Modal.Header>
+        <Modal.Body>
+          {sucessOutput ? (
+            <p className="text-gray-500">Usuário criado com sucesso!</p>
+          ) : (
+            <p className="text-gray-500">Ocorreu um erro ao criar o usuário. Por favor, tente novamente.</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => window.location.reload()}>OK</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
-
-    //<Modal show={showSucessModal} onClose={() => setOpenModal(false)}>
   );
 }

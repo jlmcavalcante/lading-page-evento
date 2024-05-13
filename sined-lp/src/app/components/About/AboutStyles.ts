@@ -14,7 +14,6 @@ export const Container = styled.section`
     @media (max-width: 1024px) {
         padding: 5rem 5rem;
     }
-
     @media (max-width: 768px) {
         padding: 3rem 2rem;
     }
@@ -130,6 +129,7 @@ export const CardsContainer = styled.div`
     grid-gap: 2rem;
     @media (max-width: 600px) {
         grid-template-columns: 1fr;
+        align-items: center;
     }
 `;
 

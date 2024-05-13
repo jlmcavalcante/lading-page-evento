@@ -39,7 +39,7 @@ const createUserFormSchema = z.object({
     }),
   birth_date: z.coerce
     .string()
-    .min(10, "Insira sua data de nascimento.")
+    .min(0, "Insira sua data de nascimento.")
     .date(),
   id_state: z.string().min(0, "Selecione um estado").transform((value) => {
     return parseInt(value);
@@ -245,7 +245,7 @@ export default function Form() {
               </div>
               <TextInput
                 type="text"
-                placeholder="Insira seu CPF"
+                placeholder="Insira seu CPF no formato 000.000.000-00"
                 {...register("cpf")}
               />
               {errors.cpf && <span className="">{errors.cpf.message}</span>}
@@ -466,8 +466,8 @@ export default function Form() {
                   cities.find((city) => city.id === userData?.id_city)?.name
                 }</span>
               </div>
-              <div>
-                <span className="font-bold items-center gap-2">Ocupação:</span>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Ocupação:</span>
                 <span>{
                   entities.find((entity) => entity.id === userData?.id_entity)?.name
                 }</span>
@@ -500,7 +500,8 @@ export default function Form() {
                 <Label htmlFor="accept" className="flex flex-row gap-2">
                   Li e concordo com os termos de serviço &nbsp;
                   <a
-                    href="#"
+                    href="https://docs.google.com/document/d/1FOiKP8lBAIaF7R41nSAEEAYf-IYYj9pcmwCgEjePuFA/edit?usp=sharing"
+                    target="_blank"
                     className="text-cyan-600 hover:underline dark:text-cyan-500"
                   >
                     Clique aqui para acessar os termos de serviço.
@@ -533,7 +534,7 @@ export default function Form() {
         </Modal.Header>
         <Modal.Body>
           {
-            <p className="text-center text-lg font-bold text-gray-700 dark:text-gray-700">
+            <p className="text-center text-md font-bold text-gray-700 dark:text-gray-700">
               {outputMessage}
             </p>
           }

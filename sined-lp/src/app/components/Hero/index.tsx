@@ -29,7 +29,7 @@ const Hero: React.FC = () => {
                 <span className="drop-shadow-lg">de Educação</span>
             </div>
             <div className="w-full my-8 flex flex-row items-center justify-center">
-                <Button to="subscribe" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
+                <Button to="formulario" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
                     <span className="text-1xl font-bold">Realizar Inscrição</span>
                 </Button>
             </div>

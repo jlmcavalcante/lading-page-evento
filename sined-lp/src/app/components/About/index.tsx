@@ -55,7 +55,7 @@ const About: React.FC = () => {
                     </InfoItem>
                 </div>
                 <div className="flex flex-col mt-4 md:mt-2 gap-y-8 md:flex-row md:gap-x-4">
-                    <Button to="subscribe" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
+                    <Button to="formulario" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
                         Realizar Inscrição
                     </Button>
                     <ButtonLink className="border drop-shadow-md" href="https://maps.app.goo.gl/5F1EiJsfWKK6VvAx6" target="_blank">

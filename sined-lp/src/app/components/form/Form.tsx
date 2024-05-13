@@ -212,7 +212,7 @@ export default function Form() {
   }
 
   return (
-    <div className="content-container flex-col">
+    <div className="content-container flex-col" id="formulario">
       <div className="py-8 px-8">
         <FormTitle>Inscrição</FormTitle>
       </div>
@@ -461,7 +461,7 @@ export default function Form() {
                 }</span>
               </div>
               <div>
-                <span className="font-bold gap-2">Ocupação:</span>
+                <span className="font-bold items-center gap-2">Ocupação:</span>
                 <span>{
                   entities.find((entity) => entity.id === userData?.id_entity)?.name
                 }</span>

@@ -308,7 +308,7 @@ export default function Form() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 flex-1 px-8">
+          <div className="flex flex-col gap-4 flex-1 px-8 max-md:mt-2">
             {/* Container para input de cidade e estado */}
             <div>
               <div className="mb-2 block">
@@ -400,7 +400,6 @@ export default function Form() {
               </div>
             </div>
           </div>
-          {error && <span className="text-red-500">{error}</span>}
         </div>
 
         <div className="px-8 py-2">

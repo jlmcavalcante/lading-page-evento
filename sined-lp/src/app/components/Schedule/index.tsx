@@ -21,7 +21,7 @@ const Schedule: React.FC = () => {
                         title: "Ministro da Educação",
                     },
                     speakers: [
-                        "Camilo Sobreira de Santana – Ministra da Educação",
+                        "Camilo Sobreira de Santana – Ministro da Educação",
                     ],
                     theme: "Criança Nacional Alfabetizada",
                     description: "",

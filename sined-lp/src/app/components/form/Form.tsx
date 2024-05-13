@@ -12,8 +12,7 @@ const apiBaseUrl = "https://sined.tcepi.tc.br/api";
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
   cpf: z
-    .string() // must have 11 or 14 characters
-    .min(11, "O CPF deve ter 11 caracteres")
+    .string()
     .max(14, "O CPF deve ter 14 caracteres")
     .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido")
     .transform((value) => {

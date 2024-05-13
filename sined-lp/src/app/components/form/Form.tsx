@@ -77,14 +77,14 @@ export default function Form() {
   const [openModal, setOpenModal] = useState(false);
   const [states, setStates] = useState<StateType[]>([]);
   const [cities, setCities] = useState<CityType[]>([]);
-  // Armazenar o estado selecionado
-  const [selectedStateId, setSelectedStateId] = useState(null);
-  // Controlar erros na requisição
-  const [error, setError] = useState(null);
+  const [selectedStateId, setSelectedStateId] = useState(null);  // Armazenar o estado selecionado
+  const [selectedProfession, setSelectedProfession] = useState(null);  // Armazenar a profissão selecionada
+  const [error, setError] = useState(null);  // Controlar erros na requisição
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
     watch,
   } = useForm<CreateUserFormData>({
@@ -251,7 +251,7 @@ export default function Form() {
 
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="nascimento" value="Data de Nascimento:" />
+                <Label htmlFor="birthdate" value="Data de Nascimento:" />
               </div>
               <TextInput type="date" {...register("birth_date")} />
 
@@ -263,7 +263,7 @@ export default function Form() {
             <div className="flex gap-8">
               <div className="flex-1">
                 <div className="mb-2 block">
-                  <Label htmlFor="estado" value="Estado:" />
+                  <Label htmlFor="state" value="Estado:" />
                 </div>
                 <Select 
                   id="estado" 
@@ -286,7 +286,7 @@ export default function Form() {
 
               <div className="flex-1">
                 <div className="mb-2 block">
-                  <Label htmlFor="cidade" value="Cidade:" />
+                  <Label htmlFor="city" value="Cidade:" />
                 </div>
                 <Select 
                   id="cidade" 
@@ -294,7 +294,7 @@ export default function Form() {
                 >
                   <option disabled={true}>Selecione</option>
                   {cities.map((city) => (
-                    <option key={city.id} value={city.id}>
+                    <option key={city.id} value={city.name}>
                       {city.name}
                     </option>
                   ))}
@@ -416,7 +416,7 @@ export default function Form() {
       </form>
 
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header>Termos de Serviço</Modal.Header>
+        <Modal.Header>Confirme seus dados</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
             <p>
@@ -476,6 +476,7 @@ export default function Form() {
                 </div>
               )}
             </div>
+
             <div className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-2">
                 <Checkbox

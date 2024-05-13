@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY . ./
 RUN npm run build 
-CMD ["tail", "-f", "/dev/null"]
+#CMD ["tail", "-f", "/dev/null"]
 
 # Stage 2: Production Stage
 FROM nginx:alpine as production-stage

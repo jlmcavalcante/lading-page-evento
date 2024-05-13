@@ -129,6 +129,7 @@ export default function Form() {
     }
     loadStates();
     loadEntities();
+    console.log(errors);
   }, []);
 
   useEffect(() => {

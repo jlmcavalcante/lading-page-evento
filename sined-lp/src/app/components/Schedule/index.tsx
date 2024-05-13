@@ -18,7 +18,7 @@ const Schedule: React.FC = () => {
                     title: "Abertura",
                     mainSpeaker: {
                         name: "Camilo Sobreira de Santana",
-                        title: "Ministra da Educação",
+                        title: "Ministro da Educação",
                     },
                     speakers: [
                         "Camilo Sobreira de Santana – Ministra da Educação",
@@ -270,7 +270,7 @@ const Schedule: React.FC = () => {
                                                         </span>
                                                         <br />
                                                         <span className="">
-                                                            {content.mainSpeaker.theme}
+                                                            {content.theme}
                                                         </span>
                                                         {
                                                             /*

@@ -11,5 +11,8 @@ RUN npm run build
 FROM nginx:alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY fullchain.pem /etc/ssl/certs/fullchain.pem
+COPY privkey.pem /etc/ssl/certs/privkey.pem
 EXPOSE 80
+EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]

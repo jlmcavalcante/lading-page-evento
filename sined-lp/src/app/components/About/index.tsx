@@ -38,7 +38,7 @@ const About: React.FC = () => {
                        O evento é destaque na agenda educacional nacional e apoiado por várias instituições, incluindo a Associação dos Membros dos Tribunais de Contas do Brasil (Atricon), o Conselho Nacional dos Presidentes dos Tribunais de Contas (CNPTC), a Associação Brasileira dos Tribunais de Contas dos Municípios (ABRACOM), a Associação Nacional do Ministério Público de Contas (AMPCON) e a Associação Nacional dos Ministros e Conselheiros Substitutos dos Tribunais de Contas (AUDICON). As inscrições serão gratuitas. Todos os interessados são convidados a participar.
                     </InfoText>
                 </div>
-                <div className="mt-4 md:mt-1">
+                <div className="mt-4 md:mt-1 max-md:flex max-md:flex-col max-lg:align-center max-lg:justify-center">
                     <InfoItem>
                         <span>
                             <FaMapMarkerAlt />
@@ -54,7 +54,7 @@ const About: React.FC = () => {
                         <span className="max-md:text-sm">4 a 6 - Junho</span>
                     </InfoItem>
                 </div>
-                <div className="flex flex-col mt-4 md:mt-2 gap-y-8 md:flex-row md:gap-x-4">
+                <div className="flex flex-col mt-4 md:mt-2 gap-y-8 md:flex-row md:gap-x-4 max-lg:align-center max-md:justify-center">
                     <Button to="formulario" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
                         Realizar Inscrição
                     </Button>

@@ -13,12 +13,8 @@ const apiBaseUrl = "https://sined.tcepi.tc.br/api";
 const createUserFormSchema = z.object({
   cpf: z
     .string() // must have 11 or 14 characters
-    .min(14, "O CPF deve ter 14 caracteres")
-    .max(14, "O CPF deve ter 14 caracteres")
-    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido")
-    .transform((value) => {
-      return value.replace(/\D/g, "");
-    }),
+    .min(11, "O CPF deve ter 11 caracteres apenas números")
+    .max(11, "O CPF deve ter 11 caracteres apenas números"),
   email: z
     .string()
     .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
@@ -236,7 +232,7 @@ export default function Form() {
                 {...register("full_name")}
               />
               {/* se existir um erro para esse campo --> mostrar mensagem de erro */}
-              {errors.full_name && <span>{errors.full_name.message}</span>}
+              {errors.full_name && <span className="text-red-700 font-italic">{errors.full_name.message}</span>}
             </div>
 
             <div>
@@ -245,10 +241,12 @@ export default function Form() {
               </div>
               <TextInput
                 type="text"
-                placeholder="Insira seu CPF no formato 000.000.000-00"
+                // accept only numbers
+                pattern="[0-9]*"
+                placeholder="Insira apenas os números do seu CPF"
                 {...register("cpf")}
               />
-              {errors.cpf && <span className="">{errors.cpf.message}</span>}
+              {errors.cpf && <span className="text-red-700 font-italic">{errors.cpf.message}</span>}
             </div>
 
             <div>
@@ -260,7 +258,7 @@ export default function Form() {
                 placeholder="nome@exemplo.com"
                 {...register("email")}
               />
-              {errors.email && <span className="">{errors.email.message}</span>}
+              {errors.email && <span className="text-red-700 font-italic">{errors.email.message}</span>}
             </div>
 
             <div>
@@ -270,7 +268,7 @@ export default function Form() {
               <TextInput type="date" {...register("birth_date")} />
 
               {errors.birth_date && (
-                <span className="">{errors.birth_date.message}</span>
+                <span className="text-red-700 font-italic">{errors.birth_date.message}</span>
               )}
             </div>
 
@@ -292,7 +290,7 @@ export default function Form() {
                   ))}
                 </Select>
                 {errors.id_state && (
-                  <span className="">
+                  <span className="text-red-700 font-italic">
                     {errors.id_state.message}
                   </span>
                 )}
@@ -314,7 +312,7 @@ export default function Form() {
                   ))}
                 </Select>
                 {errors.id_city && (
-                  <span className="">
+                  <span className="text-red-700 font-italic">
                     {errors.id_city.message}
                   </span>
                 )}
@@ -340,7 +338,7 @@ export default function Form() {
                 ))}
               </Select>
               {
-                errors.id_entity && <span>{errors.id_entity.message}</span>
+                errors.id_entity && <span className="text-red-700 font-italic">{errors.id_entity.message}</span>
               }
             </div>
 
@@ -354,7 +352,7 @@ export default function Form() {
                 {...register("entity_description")}
               />
               {
-                errors.entity_description && <span>{errors.entity_description.message}</span>
+                errors.entity_description && <span className="text-red-700 font-italic">{errors.entity_description.message}</span>
               }
             </div>
             <div>
@@ -378,10 +376,10 @@ export default function Form() {
                   className="w-full"
                 />
                 {
-                  errors.is_disabled && <span>{errors.is_disabled.message}</span>
+                  errors.is_disabled && <span className="text-red-700 font-italic">{errors.is_disabled.message}</span>
                 }
                 {
-                  errors.disabled_description && <span>{errors.disabled_description.message}</span>
+                  errors.disabled_description && <span className="text-red-700 font-italic">{errors.disabled_description.message}</span>
                 }
               </div>
             </div>
@@ -406,10 +404,10 @@ export default function Form() {
                   className="w-full"
                 />
                 {
-                  errors.needs_adaptation && <span>{errors.needs_adaptation.message}</span>
+                  errors.needs_adaptation && <span className="text-red-700 font-italic">{errors.needs_adaptation.message}</span>
                 }
                 {
-                  errors.adaptation_description && <span>{errors.adaptation_description.message}</span>
+                  errors.adaptation_description && <span className="text-red-700 font-italic">{errors.adaptation_description.message}</span>
                 }
               </div>
             </div>

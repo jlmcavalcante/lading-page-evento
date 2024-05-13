@@ -14,7 +14,8 @@ const createUserFormSchema = z.object({
   cpf: z
     .string() // must have 11 or 14 characters
     .min(11, "O CPF deve ter 11 caracteres apenas números")
-    .max(11, "O CPF deve ter 11 caracteres apenas números"),
+    .max(11, "O CPF deve ter 11 caracteres apenas números")
+    .regex(/^\d+$/, "O CPF deve conter apenas números"),
   email: z
     .string()
     .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
@@ -241,8 +242,6 @@ export default function Form() {
               </div>
               <TextInput
                 type="text"
-                // accept only numbers
-                pattern="[0-9]*"
                 placeholder="Insira apenas os números do seu CPF"
                 {...register("cpf")}
               />

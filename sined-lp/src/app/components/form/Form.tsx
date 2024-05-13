@@ -6,14 +6,19 @@ import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { FormTitle } from "./FormStyles";
 
-const apiBaseUrl = "http://sined.tcepi.tc.br/api";
+const apiBaseUrl = "https://sined.tcepi.tc.br/api";
+//const apiBaseUrl = "https://172.16.80.28/api";
 
 // Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
   cpf: z
-    .string()
-    .min(11, "Insira no mínimo 11 números")
-    .max(14, "Insira no máximo 14 caracteres"),
+    .string() // must have 11 or 14 characters
+    .min(11, "O CPF deve ter 11 caracteres")
+    .max(14, "O CPF deve ter 14 caracteres")
+    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido")
+    .transform((value) => {
+      return value.replace(/\D/g, "");
+    }),
   email: z
     .string()
     .min(1, "O e-mail é obrigatório") // Validação de campo obrigatório
@@ -36,13 +41,13 @@ const createUserFormSchema = z.object({
     .string()
     .min(10, "Insira sua data de nascimento.")
     .date(),
-  id_state: z.string().min(1, "Selecione um estado").transform((value) => {
+  id_state: z.string().min(0, "Selecione um estado").transform((value) => {
     return parseInt(value);
   }),
-  id_city: z.string().min(1, "Selecione uma cidade").transform((value) => {
+  id_city: z.string().min(0, "Selecione uma cidade").transform((value) => {
     return parseInt(value);
   }),
-  id_entity: z.string().min(1, "Selecione uma entidade").transform((value) => {
+  id_entity: z.string().min(0, "Selecione uma entidade").transform((value) => {
     return parseInt(value);
   }),
   entity_description: z.string().min(1, "Especifique a entidade/órgão"),
@@ -176,7 +181,6 @@ export default function Form() {
       full_name: userData.full_name,
       birth_date: userData.birth_date,
       id_state: userData.id_state,
-      //id_city: idCity,
       id_city: userData.id_city,
       id_entity: userData.id_entity,
       entity_description: userData.entity_description,
@@ -295,7 +299,7 @@ export default function Form() {
                 >
                   <option disabled={true}>Selecione</option>
                   {cities.map((city) => (
-                    <option key={city.id} value={city.name}>
+                    <option key={city.id} value={city.id}>
                       {city.name}
                     </option>
                   ))}
@@ -485,12 +489,12 @@ export default function Form() {
                   onChange={(e) => setIsTermsAccepted(e.target.checked)}
                 />
                 <Label htmlFor="accept" className="flex">
-                  Li e concordo com os&nbsp;
+                  Li e concordo com os termos de serviço &nbsp;
                   <a
                     href="#"
                     className="text-cyan-600 hover:underline dark:text-cyan-500"
                   >
-                    termos de serviço.
+                    Clique aqui para acessar os termos de serviço.
                   </a>
                 </Label>
               </div>

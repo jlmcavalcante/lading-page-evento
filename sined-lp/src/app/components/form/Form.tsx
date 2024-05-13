@@ -312,7 +312,7 @@ export default function Form() {
             {/* Container para input de cidade e estado */}
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="id_entity" value="Entidade:" />
+                <Label htmlFor="id_entity" value="Ocupação:" />
               </div>
               <Select
                 id="id_entity"
@@ -454,7 +454,7 @@ export default function Form() {
                 }</span>
               </div>
               <div>
-                <span className="font-bold gap-2">Entidade:</span>
+                <span className="font-bold gap-2">Ocupação:</span>
                 <span>{
                   entities.find((entity) => entity.id === userData?.id_entity)?.name
                 }</span>

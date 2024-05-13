@@ -74,6 +74,7 @@ export default function Form() {
     id: number,
     name: string,
   }
+  const [outputMessage, setOutputMessage] = useState("");  // [1
   const [sucessOutput, setSucessOutput] = useState(false);  // [1]
   const [outputModal, setOutputModal] = useState(false);
   const [userData, setUserData] = useState<CreateUserFormData>();
@@ -200,12 +201,17 @@ export default function Form() {
         },
         body: JSON.stringify(consolidatedData),
       });
-      if (!response.ok) {
-        throw new Error(`HTTP status ${response.status}`);
-      }
+      // Verifica se a requisição foi bem-sucedida (status 2xx) ou se foi 409 (conflito) ou 406 (não aceitável)
+      // se 2xx pegue a mensagem de sucesso do atributo message do JSON retornado
+      // se for 4xx pegue a mensagem de erro do atributo detail do JSON retornado
       const data = await response.json();
       console.log(data);
-      setSucessOutput(true);
+      if (response.ok) {
+        setOutputMessage(data.message);
+        setSucessOutput(true);
+      } else {
+        setOutputMessage(data.detail);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -526,14 +532,15 @@ export default function Form() {
           {sucessOutput ? "Usuário criado com sucesso" : "Erro ao criar usuário"}
         </Modal.Header>
         <Modal.Body>
-          {sucessOutput ? (
-            <p className="text-gray-500">Usuário criado com sucesso!</p>
-          ) : (
-            <p className="text-gray-500">Ocorreu um erro ao criar o usuário. Por favor, tente novamente.</p>
-          )}
+          {
+            <p className="text-center text-lg font-bold text-gray-700 dark:text-gray-700">
+              {outputMessage}
+            </p>
+          }
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => window.location.reload()}>OK</Button>
+        <Modal.Footer className="flex justify-center gap-4">
+          <Button className="w-1/2"
+          onClick={() => window.location.reload()}>OK</Button>
         </Modal.Footer>
       </Modal>
     </div>

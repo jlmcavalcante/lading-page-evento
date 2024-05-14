@@ -220,8 +220,8 @@ export default function Form() {
         <FormTitle>Inscrição</FormTitle>
       </div>
 
-      <form onSubmit={handleSubmit(setUserData)} className="flex flex-col">
-        <div className="flex flex-col md:flex-row gap-y-4cidade gap-x-16 mb-8">
+      <form onSubmit={handleSubmit(setUserData)} className="flex flex-col pb-4">
+        <div className="flex flex-col md:flex-row gap-y-4 gap-x-8 mb-4">
           <div className="flex flex-col gap-4 flex-1 px-8">
             <div>
               <div className="mb-2 block">
@@ -416,7 +416,7 @@ export default function Form() {
           </div>
         </div>
 
-        <div className="px-8 py-2">
+        <div className="px-8 py-8">
           <Button
             type="submit"
             onClick={() => setOpenModal(true)}

@@ -38,13 +38,13 @@ const createUserFormSchema = z.object({
     .string()
     .min(0, "Insira sua data de nascimento.")
     .date(),
-  id_state: z.string().min(0, "Selecione um estado").transform((value) => {
+  id_state: z.string().min(1, "Selecione um estado").transform((value) => {
     return parseInt(value);
   }),
-  id_city: z.string().min(0, "Selecione uma cidade").transform((value) => {
+  id_city: z.string().min(1, "Selecione uma cidade").transform((value) => {
     return parseInt(value);
   }),
-  id_entity: z.string().min(0, "Selecione uma entidade").transform((value) => {
+  id_entity: z.string().min(1, "Selecione uma entidade").transform((value) => {
     return parseInt(value);
   }),
   entity_description: z.string().min(1, "Especifique a entidade/órgão"),
@@ -279,9 +279,10 @@ export default function Form() {
                 <Select 
                   id="estado" 
                   {...register("id_state")}
+                  defaultValue=""
                   onChange={handleStateChange}
                 >
-                  <option disabled={true}>Selecione</option>
+                  <option value="">Selecione</option>
                   {states.map((state) => (
                     <option key={state.id} value={state.id}>
                       {state.name}
@@ -300,10 +301,11 @@ export default function Form() {
                   <Label htmlFor="city" value="Cidade:" />
                 </div>
                 <Select 
-                  id="cidade" 
+                  id="cidade"
+                  defaultValue=""
                   {...register("id_city")}
                 >
-                  <option disabled={true}>Selecione</option>
+                  <option value="">Selecione</option>
                   {cities.map((city) => (
                     <option key={city.id} value={city.id}>
                       {city.name}
@@ -327,9 +329,10 @@ export default function Form() {
               </div>
               <Select
                 id="id_entity"
+                defaultValue=""
                 {...register("id_entity")} 
               >
-                <option disabled={true}>Selecione</option>
+                <option value="">Selecione</option>
                 {entities.map((entity) => (
                   <option key={entity.id} value={entity.id}>
                     {entity.name}

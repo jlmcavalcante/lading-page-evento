@@ -36,7 +36,7 @@ const Hero: React.FC = () => {
             </div>
             <div className="flex justify-center items-center mt-8">
                 <img
-                            src="/Sined_Logos.svg"
+                            src="/sined_logos OK(1).svg"
                             alt="logos_sined"
                             // width as 50% of the screen width
                             className="w-60 md:w-96"

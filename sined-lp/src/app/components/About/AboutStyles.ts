@@ -60,7 +60,7 @@ export const InfoSubTitle = styled.h3`
 
 export const InfoTitle = styled.h1`
     font-size: 3rem;
-    color: var(--color-primary);
+    color: rgba(59,0,163,255);
     @media (max-width: 1024px) {
         text-align: start;
         padding: 0 1rem;
@@ -91,7 +91,7 @@ export const InfoItem = styled.div`
     }
 
     span:nth-child(1) {
-        color: var(--color-primary);
+        color: rgba(59,0,163,255);
     }
 
     span:nth-child(2) {
@@ -107,7 +107,7 @@ export const InfoItem = styled.div`
 export const Button = styled(LinkScroll)`
     color: white;
     padding: 1rem 1.25rem;
-    background: var(--color-primary);
+    background: rgba(59,0,163,255);
     border: none;
     border-radius: 10px;
     transition: all 0.2s;
@@ -124,7 +124,7 @@ export const Button = styled(LinkScroll)`
 export const ButtonLink = styled.a`
     color: white;
     padding: 1rem 1.25rem;
-    background: var(--color-primary);
+    background: rgba(59,0,163,255);
     border: none;
     border-radius: 10px;
     transition: all 0.2s;
@@ -145,7 +145,7 @@ export const CardNumber = styled.div`
     border-radius: 50%;
     width: 100px;
     height: 100px;
-    background: var(--color-primary);
+    background: rgba(59,0,163,255);
     color: white;
     font-size: 1.2rem;
     font-weight: 600;

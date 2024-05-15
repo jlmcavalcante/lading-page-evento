@@ -5,19 +5,18 @@ export const Container = styled.section`
     padding: 5rem 10rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
     background: var(--gradient-white-2);
     gap: 2rem;
     @media (max-width: 1200px) {
         flex-direction: column;
+        align-items: center;
     }
     @media (max-width: 1024px) {
         padding: 5rem 5rem;
-        align-items: center;
     }
     @media (max-width: 768px) {
         padding: 3rem 2rem;
-        align-items: center;
     }
 `;
 
@@ -29,28 +28,42 @@ export const InfoContainer = styled.div`
     gap: 1rem;
     @media (max-width: 1201px) {
         width: 100%;
-        gap: 0.5rem;
+        gap: 1rem;
+        align-items: center;
     }
 
     @media (max-width: 768px) {
+    }
+`;
+
+export const CardsContainer = styled.div`
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 2rem;
+    @media (max-width: 1024px) {
+        display: flex;
+        flex-direction: column;
         align-items: center;
     }
 `;
+
 
 export const InfoSubTitle = styled.h3`
     color: var(--color-gray);
     font-weight: 400;
     font-size: 1.8rem;
-=    @media (max-width: 768px) {
-        text-align: center;
+    @media (max-width: 1024px) {
+        text-align: start;
+        padding: 0 1rem;
     }
 `;
 
 export const InfoTitle = styled.h1`
     font-size: 3rem;
     color: var(--color-primary);
-    @media (max-width: 768px) {
-        text-align: center;
+    @media (max-width: 1024px) {
+        text-align: start;
+        padding: 0 1rem;
     }
 `;
 
@@ -58,8 +71,9 @@ export const InfoText = styled.div`
     color: var(--color-gray);
     font-size: 1.1rem;
     line-height: 1.6;
-    @media (max-width: 768px) {
-        text-align: center;
+    @media (max-width: 1024px) {
+        text-align: start;
+        padding: 0 1rem;
     }
 `;
 
@@ -121,18 +135,6 @@ export const ButtonLink = styled.a`
     &:hover {
         cursor: pointer;
         background: var(--color-primary-dark);
-    }
-`;
-
-export const CardsContainer = styled.div`
-    height: 50%;
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-gap: 2rem;
-    @media (max-width: 600px) {
-        grid-template-columns: 1fr;
-        align-items: center;
-
     }
 `;
 

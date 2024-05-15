@@ -9,6 +9,7 @@ import {
 const Hero: React.FC = () => {
     return (
         <MainContainer>
+            {/*
             <div className="content-container">
                 <Menu>
                     <Logo>
@@ -20,7 +21,28 @@ const Hero: React.FC = () => {
                     </Logo>
                 </Menu>
             </div>
-
+            */}
+            <div className="content-container">
+                <Menu>
+                    <Logo className="flex justify-center items-center mt-16">
+                        <img
+                            src="/Sined_logo_vertical.png"
+                            alt="chamada_sined"
+                            // width as 70% of the screen width in smaller screens and 50% in larger screens
+                            className="w-60 md:w-96"
+                        />
+                    </Logo>
+                </Menu>
+            </div>
+            <div className="flex justify-center items-center mt-8">
+                <img
+                            src="/Sined_Logos.svg"
+                            alt="logos_sined"
+                            // width as 50% of the screen width
+                            className="w-60 md:w-96"
+                        />
+            </div>
+            {/*
             <div className="uppercase mt-16 flex flex-col gap-4 text-center text-3xl font-black tracking-tight text-white-900 sm:text-5xl">
                 <span>
                     <span className="text-[#fbc404] drop-shadow-lg">VI </span>
@@ -28,6 +50,7 @@ const Hero: React.FC = () => {
                 </span>
                 <span className="drop-shadow-lg">de Educação</span>
             </div>
+            */}
             <div className="w-full my-8 flex flex-row items-center justify-center">
                 <Button to="formulario" smooth={true} duration={500} spy={true} className="border drop-shadow-md">
                     <span className="text-1xl font-bold">Realizar Inscrição</span>

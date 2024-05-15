@@ -30,12 +30,23 @@ const About: React.FC = () => {
         <Container id="about">
             <InfoContainer>
                 <div>
-                    <InfoSubTitle>Una-se ao</InfoSubTitle>
+                    <InfoSubTitle>
+                        Una-se ao
+                    </InfoSubTitle>
                     <InfoTitle>Nosso Evento</InfoTitle>
                 </div>
                 <div>
                     <InfoText>
-                       O evento é destaque na agenda educacional nacional e apoiado por várias instituições, incluindo a Associação dos Membros dos Tribunais de Contas do Brasil (Atricon), o Conselho Nacional dos Presidentes dos Tribunais de Contas (CNPTC), a Associação Brasileira dos Tribunais de Contas dos Municípios (ABRACOM), a Associação Nacional do Ministério Público de Contas (AMPCON) e a Associação Nacional dos Ministros e Conselheiros Substitutos dos Tribunais de Contas (AUDICON). As inscrições serão gratuitas. Todos os interessados são convidados a participar.
+                    O Tribunal de Contas do Estado do Piauí (TCE-PI), em parceria com o Instituto Rui Barbosa (IRB), realizará nos dias 04, 05 e 06 de junho deste ano o VI Simpósio Nacional de Educação (SINED).
+                    <br/>
+                    <br/>
+                    O evento se estabelece como um espaço privilegiado de debate e reflexão sobre os desafios enfrentados pela educação no Brasil, com o objetivo de propor soluções inovadoras e eficazes para o setor.
+                    <br/>
+                    <br/>
+                    O VI SINED contará com uma programação rica e diversificada, composta por palestras e atividades voltadas para temas críticos da educação pública brasileira. O simpósio reunirá especialistas renomados, além de gestores educacionais e representantes de órgãos de controle externo. O encontro permitirá a troca de conhecimentos e experiências, promovendo uma discussão aprofundada e colaborativa sobre as melhores práticas e estratégias para o avanço da educação no país.
+                    <br/>
+                    <br/>
+                    Uma oportunidade de produzir insights valiosos e inspirar ações concretas que contribuam significativamente para a melhoria da qualidade educacional no Brasil. Participe conosco deste importante fórum e ajude a construir um futuro educacional mais promissor para todos.
                     </InfoText>
                 </div>
                 <div className="mt-4 md:mt-1 max-md:flex max-md:flex-col max-lg:align-center max-lg:justify-center">
@@ -63,7 +74,8 @@ const About: React.FC = () => {
                     </ButtonLink>
                 </div>
             </InfoContainer>
-            <CardsContainer>
+            <div className="flex flex-col lg:flex-col xl:flex-row justify-center items-center xl:gap-x-8 md:flex-col md:gap-y-8">
+            <CardsContainer className="m-0 lg:mt-32">
                 <Card>
                     <CardIcon>
                         <FaRegComments />
@@ -85,7 +97,7 @@ const About: React.FC = () => {
                     <CardNumber></CardNumber>
                 </Card>
             </CardsContainer>
-            <CardsContainer>
+            <CardsContainer className="mt-8 lg:mt-0 xl:mt-32">
                 <Card>
                     <CardIcon>
                         <GiPublicSpeaker />
@@ -107,6 +119,7 @@ const About: React.FC = () => {
                     <CardNumber></CardNumber>
                 </Card>
             </CardsContainer>
+            </div>
         </Container>
     );
 };

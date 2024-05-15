@@ -5,9 +5,10 @@ export const MainContainer = styled.div`
     min-height: 400px;
     padding: 1.5rem 0;
 
-    background-image: url('/sined-background.png');
-    background-position: center;
+    background-image: url('/Sined_bg.png');
+    // make the background image cover the whole container and scrach the sides
     background-size: cover;
+    background-position: center;
     color: #fff;
 `;
 

@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Modal } from "flowbite-react";
+import {
+  AiOutlineAlert
+} from "react-icons/ai";
 import { FormTitle } from "./FormStyles";
 
 const apiBaseUrl = "https://sined.tcepi.tc.br/api";
@@ -216,6 +219,13 @@ export default function Form() {
     <div className="content-container flex-col" id="formulario">
       <div className="py-8 px-8">
         <FormTitle>Inscrição</FormTitle>
+        <p className="mt-2 text-md text-gray-500 dark:text-gray-400">
+          <div className="flex flex-row gap-2">
+            <span><AiOutlineAlert /></span>
+            <span className="font-bold">Atenção:</span>
+          </div>
+          Para assegurar a integridade no formato dos dados, por favor, preencha os campos sem a utilização de ferramentas de auto-preenchimento. Caso contrário, a inscrição poderá não ser efetivada.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit(setUserData)} className="flex flex-col pb-4">

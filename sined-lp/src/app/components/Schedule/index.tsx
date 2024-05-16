@@ -216,7 +216,7 @@ const Schedule: React.FC = () => {
                 },                
                 {
                     date: "06/06/2024",
-                    time: "15:00",
+                    time: "17:00",
                     location: "",
                     title: "Encerramento",
                     mainSpeaker: {

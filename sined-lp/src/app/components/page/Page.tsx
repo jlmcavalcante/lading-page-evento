@@ -29,9 +29,9 @@ export default function Page() {
         <Form />
       </section>
 
-      <section>
+      {/*<section>
         <Certificate />
-      </section>
+  </section>*/}
     </div>
   );
 }

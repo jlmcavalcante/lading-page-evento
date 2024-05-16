@@ -6,6 +6,7 @@ import '../../../index.css';
 import { customCarouselTheme } from '../../flowbite-themes/CarouselTheme';
 import Form from '../form/Form';
 import './Page.scss';
+import Certificate from "../Certificate/Certificate";
 
 
 export default function Page() {
@@ -26,6 +27,10 @@ export default function Page() {
 
       <section>
         <Form />
+      </section>
+
+      <section>
+        <Certificate />
       </section>
     </div>
   );

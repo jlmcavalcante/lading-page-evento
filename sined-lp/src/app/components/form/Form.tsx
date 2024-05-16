@@ -99,8 +99,6 @@ export default function Form() {
   });
 
   const watchedValues = watch();
-  // "https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states"
-  // `https://sined-api-dev-kvgl74sgpa-rj.a.run.app/states/${selectedState!.id}/cities`
   
   useEffect(()=>{
     const loadStates = async () => {

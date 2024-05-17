@@ -7,6 +7,7 @@ import { customCarouselTheme } from '../../flowbite-themes/CarouselTheme';
 import Form from '../form/Form';
 import './Page.scss';
 import Certificate from "../Certificate/Certificate";
+import Hotels from "../Hotels/Hotels";
 
 
 export default function Page() {
@@ -27,6 +28,10 @@ export default function Page() {
 
       <section>
         <Form />
+      </section>
+
+      <section className="bg-[#3c06a4]">
+        <Hotels />
       </section>
 
       {/*<section>

@@ -16,7 +16,7 @@ html, body {
 }
 
 .content-container {
-  max-width: 1080px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2%;
   display: flex;

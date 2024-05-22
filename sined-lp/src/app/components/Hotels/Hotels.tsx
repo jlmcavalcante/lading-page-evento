@@ -6,13 +6,13 @@ type Props = {};
 
 export default function Hotels({}: Props) {
   return (
-    <main className="content-container">
-      <div className="flex flex-col gap-8 p-8">
-        <div>
-          <HotelTitle>Hotéis</HotelTitle>
+    <main className="content-container flex flex-col gap-y-8 gap-x-8 justify-center items-center">
+      <div className="px-8 py-8">
+        <div className="mb-8">
+          <HotelTitle>Recomendações</HotelTitle>
         </div>
 
-        <div className="flex flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           <Card
             className="flex-1"
             imgAlt="Foto do Hotel"
@@ -59,7 +59,7 @@ export default function Hotels({}: Props) {
           </Card>
         </div>        
         
-        <div className="flex flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8 mt-8">
           <Card
             className="flex-1"
             imgAlt="Foto do Hotel"

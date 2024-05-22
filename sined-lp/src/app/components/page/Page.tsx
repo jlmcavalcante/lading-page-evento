@@ -33,10 +33,11 @@ export default function Page() {
       <section className="bg-[#3c06a4]">
         <Hotels />
       </section>
-
-      {/*<section>
+      {/*
+      <section>
         <Certificate />
-  </section>*/}
+      </section>
+      */}
     </div>
   );
 }

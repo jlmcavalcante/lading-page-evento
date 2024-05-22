@@ -4,15 +4,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Modal } from "flowbite-react";
-import {
-  AiOutlineAlert
-} from "react-icons/ai";
+import { AiOutlineAlert } from "react-icons/ai";
 import { FormTitle } from "./FormStyles";
 
 const apiBaseUrl = "https://sined.tcepi.tc.br/api";
-//const apiBaseUrl = "https://172.16.80.28/api";
 
-// Schema: representação de uma estrutura de dados (objeto gerado do formulário).
 const createUserFormSchema = z.object({
   cpf: z
     .string() // must have 11 or 14 characters
@@ -57,7 +53,6 @@ const createUserFormSchema = z.object({
   adaptation_description: z.string().min(0, "Especifique a adaptação").optional(),
 });
 
-// Clonar o tipo do objeto através da função infer (Inferência).
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export default function Form() {
@@ -96,9 +91,8 @@ export default function Form() {
     formState: { errors, isValid },
     watch,
   } = useForm<CreateUserFormData>({
-    // Objeto de configuração para reconhecimento das regras de validação.
     resolver: zodResolver(createUserFormSchema),
-    mode: "onChange", // Validação em tempo real.
+    mode: "onChange",
   });
 
   const watchedValues = watch();
@@ -112,12 +106,9 @@ export default function Form() {
         if (!response.ok) {
           throw new Error(`HTTP status ${response.status}`);
         }
-        // Converte a resposta para JSON
         const data = await response.json();
-        // Atualiza o estado
         setStates(data);
       } catch (error) {
-        // Atualiza o estado de erro, se houver.
         setError(error.message);
       }
     }

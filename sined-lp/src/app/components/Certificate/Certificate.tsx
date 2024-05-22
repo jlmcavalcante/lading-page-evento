@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Label, Radio, TextInput } from "flowbite-react";
+import { Button, Label, Modal, Radio, TextInput } from "flowbite-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormTitle } from "../form/FormStyles";
@@ -24,6 +24,7 @@ type certificateFormData = z.infer<typeof certificateFormSchema>;
 export default function Certificate() {
   const [userData, setUserData] = useState<certificateFormData>();
   const [isRequestSent, setIsRequestSent] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const {
     register,
@@ -81,8 +82,8 @@ export default function Certificate() {
       <div className="py-8 px-8">
         <FormTitle>Obter Certificado</FormTitle>
       </div>
-      <form onSubmit={handleSubmit(getCertificate)} className="flex flex-col pb-4 px-8 py-8">
-        <div className="flex flex-row gap-8 pb-8">
+      <form onSubmit={handleSubmit(getCertificate)} className="pb-8 px-8">
+        <div className="flex flex-row items-end gap-8">
           <div className="flex-1">
             <div className="mb-2 block">
               <Label htmlFor="cpf" value="CPF:" />
@@ -96,25 +97,42 @@ export default function Certificate() {
               <span className="text-red-700 font-italic">{errors.cpf.message}</span>
             )}
           </div>
-          <div>
-            <fieldset className="flex max-w-md flex-row gap-4">
-              <legend className="mb-4">Formato:</legend>
-              <div className="flex items-center gap-2">
-                <Radio id="qrcode" value="qrcode" {...register("type")} defaultChecked />
-                <Label htmlFor="qrcode">QRcode</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Radio id="image" name="countries" {...register("type")} value="image" />
-                <Label htmlFor="image">Imagem</Label>
-              </div>
-            </fieldset>
+          <div className="flex-none w-72">
+            <Button className="w-full" onClick={() => setOpenModal(true)}>
+              Confirmar
+            </Button>
           </div>
         </div>
-      
-        <Button type="submit" className="w-full">
-          Obter Certificado
-        </Button>
       </form>
+
+      <Modal show={openModal} onClose={() => setOpenModal(false)}>
+        <Modal.Header>
+          Obtenha o certificado
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit(getCertificate)} className="p-4">
+            <div className="py-8">
+              <fieldset className="flex max-w-md flex-row gap-4">
+                <legend className="mb-4">Formato:</legend>
+                <div className="flex items-center gap-2">
+                  <Radio id="qrcode" value="qrcode" {...register("type")} defaultChecked />
+                  <Label htmlFor="qrcode">QRcode</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Radio id="image" name="countries" {...register("type")} value="image" />
+                  <Label htmlFor="image">Imagem</Label>
+                </div>
+              </fieldset>
+            </div>
+
+            <div className="">
+              <Button className="w-full" onClick={() => setOpenModal(true)}>
+                Obter certificado
+              </Button>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

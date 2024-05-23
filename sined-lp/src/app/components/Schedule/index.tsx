@@ -244,7 +244,7 @@ const Schedule: React.FC = () => {
             aria-label="Default tabs"
             theme={customTabTheme}
             style="underline"
-            className="w-full pt-2 px-8 pb-8"
+            className="w-full pt-2 px-8 pb-8 max-lg:justify-center"
           >
             {
                 events.map((event, index) => {
@@ -296,9 +296,12 @@ const Schedule: React.FC = () => {
                                                             })
                                                         }
                                                         <br />
-                                                        <p>
-                                                            Local: {content.location}
-                                                        </p>
+                                                        {
+                                                            content.location !== "" &&
+                                                            <p>
+                                                                Local: {content.location}
+                                                            </p>
+                                                        }
                                                         {
                                                             content.subcontent.map((sub, index) => {
                                                                 return (

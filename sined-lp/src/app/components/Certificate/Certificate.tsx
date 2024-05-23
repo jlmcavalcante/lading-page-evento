@@ -80,11 +80,11 @@ export default function Certificate() {
   return (
     <div className="content-container flex-col">
       <div className="py-8 px-8">
-        <FormTitle>Obter Certificado</FormTitle>
+        <FormTitle>Consultar Inscrição</FormTitle>
       </div>
       <form onSubmit={handleSubmit(getCertificate)} className="pb-8 px-8">
-        <div className="flex flex-row items-end gap-8">
-          <div className="flex-1">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="">
             <div className="mb-2 block">
               <Label htmlFor="cpf" value="CPF:" />
             </div>
@@ -97,11 +97,9 @@ export default function Certificate() {
               <span className="text-red-700 font-italic">{errors.cpf.message}</span>
             )}
           </div>
-          <div className="flex-none w-72">
-            <Button className="w-full" onClick={() => setOpenModal(true)}>
-              Confirmar
-            </Button>
-          </div>
+          <Button className="w-full" onClick={() => setOpenModal(true)}>
+            Confirmar
+          </Button>
         </div>
       </form>
 

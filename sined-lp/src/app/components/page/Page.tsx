@@ -13,26 +13,37 @@ import Hotels from "../Hotels/Hotels";
 export default function Page() {
   return (
     <div className="app">
-      
-      <section>
-        <Hero />
-      </section>
+      {
+        <section>
+          <Hero />
+        </section>
+      }
+      {
+        <section>
+          <About />
+        </section>
+      }
+      {
+        <section className="bg-[#3c06a4]">
+          <Schedule />
+        </section>
+      }
+      {
+        <section>
+          <Form />
+        </section>
+      }
+      {
+        <section className="bg-[#3c06a4]">
+          <Hotels />
+        </section>
+      }
+      {
+        <section>
+          <Certificate />
+        </section>
+      }
 
-      <section>
-        <About />
-      </section>
-
-      <section className="bg-[#3c06a4]">
-        <Schedule />
-      </section>
-
-      <section>
-        <Form />
-      </section>
-
-      <section className="bg-[#3c06a4]">
-        <Hotels />
-      </section>
       
       {/*
       <section>

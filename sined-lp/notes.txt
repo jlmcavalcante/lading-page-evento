@@ -6,3 +6,8 @@
       return email.endsWith("@sined.com");
     }, "O e-mail precisa ser @sined.com"),
 ************
+
+        <div className="">
+          <HotelTitle>Nossas Recomendações</HotelTitle>
+        </div>
+        

@@ -20,10 +20,11 @@ const searchSchema = z.object({
 
 // Clonar o tipo do objeto através da função infer (Inferência).
 type Search = z.infer<typeof searchSchema>;
+type User = CreateUserFormData & {id: number};
 
 
 export default function Certificate() {
-  const [userData, setUserData] = useState<CreateUserFormData>();
+  const [userData, setUserData] = useState<User>();
   const [isRequestSent, setIsRequestSent] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,46 +36,62 @@ export default function Certificate() {
   });
 
   const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
+    if(userData) {
+      const [year, month, day] = dateString.split('-');
+      return `${day}/${month}/${year}`;
+    }
   };
 
-  const getCertificate = (cpf) => {
-    if (isRequestSent) {
-      console.log("Requisição já foi enviada.");
-      return;
-    }
+  const getCertificate = async () => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/users/${userData.id}/certificate/`);
+      // const response = await fetch("/apoiador-1.jpeg"); // para testar com uma imagem local
 
-    const getImage = async () => {
-      try {
-        const response = await fetch(`${apiBaseUrl}/certificado/${cpf}`);
-        // const response = await fetch("/apoiador-1.jpeg"); // para testar com uma imagem local
-
-        if (!response.ok) {
-          throw new Error('Falha ao baixar o certificado');
-        }
-
-        const blobUrl = URL.createObjectURL(await response.blob());
-        
-        // Cria um elemento <a> temporário para fazer o download
-        const downloadLink = document.createElement('a');
-        downloadLink.href = blobUrl;
-        downloadLink.download = `imagem-${cpf}`;
-  
-        // Simula um clique no link para iniciar o download
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-  
-        // Limpa o link e a URL do Blob
-        document.body.removeChild(downloadLink);
-        URL.revokeObjectURL(blobUrl);
-
-        setIsRequestSent(true);
-      } catch (error) {
-        console.error('Erro da requisição: ', error);
+      if (!response.ok) {
+        throw new Error('Falha ao baixar o certificado');
       }
+
+      const blobUrl = URL.createObjectURL(await response.blob());
+      
+      // Cria um elemento <a> temporário para fazer o download
+      const downloadLink = document.createElement('a');
+      downloadLink.href = blobUrl;
+      downloadLink.download = `imagem-${userData.id}`;
+
+      // Simula um clique no link para iniciar o download
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+
+      // Limpa o link e a URL do Blob
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Erro da requisição: ', error);
     }
-    getImage();
+  }  
+  
+  const getQrcode = async () => {
+    try {
+      const response = await fetch(`${apiBaseUrl}/users/${userData.id}/badge/`);
+
+      if (!response.ok) {
+        throw new Error('Falha ao obter o QrCode');
+      }
+
+      const blobUrl = URL.createObjectURL(await response.blob());
+      
+      const downloadLink = document.createElement('a');
+      downloadLink.href = blobUrl;
+      downloadLink.download = `imagem-${userData.id}`;
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Erro da requisição: ', error);
+    }
   }
 
   const getUserData = async (form: Search) => {
@@ -88,11 +105,15 @@ export default function Certificate() {
       }
 
       const data = await response.json();
-      setUserData(data[0]);
-      console.log(data[0]);
+      if (data.length === 0) {
+        setUserData(null);
+      } else {
+        setUserData(data[0]);
+      }
       setOpenModal(true);
     } catch (error) {
-      console.error('Erro da requisição: ', error)
+      console.error('Erro da requisição: ', error);
+      setOpenModal(true);
     } finally {
       setLoading(false);
     }
@@ -139,44 +160,43 @@ export default function Certificate() {
 
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>
-          Obtenha os seus recursos
+          {userData ? 'Obtenha o certificado' : 'Cadastro Necessário'}
         </Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
-            <p>
-              Por favor, confirme os dados abaixo e selecione o que deseja:
-            </p>
-            <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400 pb-6 pl-6">
-              <div className="flex items-center gap-2">
-                <span className="font-bold">Nome:</span>
-                <span>{userData?.full_name}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold">Email:</span>
-                <span>{userData?.email}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold">CPF:</span>
-                <span>{userData?.cpf}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold">Data de Nascimento:</span>
-                <span>{formatDate(userData?.birth_date)}</span>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="flex flex-row gap-8">
-            {/* Botão que chama a função obter QrCode */}
-            <Button className="flex-1">
-              QrCode
-            </Button>
-
-            {/* Botão que chama a função de obter certificado */}
-            <Button className="flex-1">
-              Certificado
-            </Button>
+            {userData ? (
+              <>
+                <p>Por favor, confirme os dados abaixo e obtenha seu recurso:</p>
+                <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400 pb-6 pl-6">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold">Nome:</span>
+                    <span>{userData.full_name}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold">Email:</span>
+                    <span>{userData.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold">CPF:</span>
+                    <span>{userData.cpf}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold">Data de Nascimento:</span>
+                    <span>{formatDate(userData.birth_date)}</span>
+                  </div>
+                </div>
+                <div className="flex flex-row gap-8">
+                  <Button className="flex-1" onClick={getQrcode}>
+                    QrCode
+                  </Button>
+                  <Button className="flex-1" onClick={getCertificate}>
+                    Certificado
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <p>Não foi possível encontrar nenhum usuário com esse CPF, certifique-se de que você já fez o seu cadastro.</p>
+            )}
           </div>
         </Modal.Body>
       </Modal>

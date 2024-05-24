@@ -5,41 +5,41 @@ import { z } from "zod";
 import { FormTitle } from "../form/FormStyles";
 import { useState } from "react";
 import { MdInfo } from "react-icons/md";
+import { CreateUserFormData } from "../form/Form";
 
 
 const apiBaseUrl = "https://sined.tcepi.tc.br/api";
 
-const certificateFormSchema = z.object({
+const searchSchema = z.object({
   cpf: z
     .string() // must have 11 or 14 characters
     .min(11, "O CPF deve ter 11 caracteres apenas números")
     .max(11, "O CPF deve ter 11 caracteres apenas números")
     .regex(/^\d+$/, "O CPF deve conter apenas números"),
-  type: z.string().min(1, "Selecione um formato"),
 });
 
 // Clonar o tipo do objeto através da função infer (Inferência).
-type certificateFormData = z.infer<typeof certificateFormSchema>;
+type Search = z.infer<typeof searchSchema>;
 
 
 export default function Certificate() {
-  const [userData, setUserData] = useState<certificateFormData>();
+  const [userData, setUserData] = useState<CreateUserFormData>();
   const [isRequestSent, setIsRequestSent] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors, isValid },
-    watch,
-  } = useForm<certificateFormData>({
-    // Objeto de configuração para reconhecimento das regras de validação.
-    resolver: zodResolver(certificateFormSchema),
-    mode: "onChange", // Validação em tempo real.
+
+  const { register, handleSubmit, formState: { errors, isValid }} = useForm<Search>({
+    resolver: zodResolver(searchSchema),
+    mode: "onChange",
   });
 
-  const getCertificate = (formValue: certificateFormData) => {
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+  const getCertificate = (cpf) => {
     if (isRequestSent) {
       console.log("Requisição já foi enviada.");
       return;
@@ -47,7 +47,7 @@ export default function Certificate() {
 
     const getImage = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/certificado/${formValue.cpf}/${formValue.type}`);
+        const response = await fetch(`${apiBaseUrl}/certificado/${cpf}`);
         // const response = await fetch("/apoiador-1.jpeg"); // para testar com uma imagem local
 
         if (!response.ok) {
@@ -59,7 +59,7 @@ export default function Certificate() {
         // Cria um elemento <a> temporário para fazer o download
         const downloadLink = document.createElement('a');
         downloadLink.href = blobUrl;
-        downloadLink.download = `imagem-${formValue.cpf}`;
+        downloadLink.download = `imagem-${cpf}`;
   
         // Simula um clique no link para iniciar o download
         document.body.appendChild(downloadLink);
@@ -71,11 +71,31 @@ export default function Certificate() {
 
         setIsRequestSent(true);
       } catch (error) {
-        console.error('Erro ao fazer o download do certificado:', error);
+        console.error('Erro da requisição: ', error);
       }
     }
-
     getImage();
+  }
+
+  const getUserData = async (form: Search) => {
+    console.log("get user data: " + form.cpf);
+    setLoading(true);
+    try {
+      const response = await fetch(`${apiBaseUrl}/users?cpf=${form.cpf}`);
+
+      if(!response.ok) {
+        throw new Error('Falha ao obter dados do usuário');
+      }
+
+      const data = await response.json();
+      setUserData(data[0]);
+      console.log(data[0]);
+      setOpenModal(true);
+    } catch (error) {
+      console.error('Erro da requisição: ', error)
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -90,7 +110,7 @@ export default function Certificate() {
         </div>
         Consulte aqui os dados da sua inscrição, informando o seu CPF, gere o QR Code de presença e faça o download do certificado de participação no evento, que estará disponível após o evento.
       </p>
-      <form onSubmit={handleSubmit(getCertificate)} className="pb-8 px-8 flex flex-col">
+      <form onSubmit={handleSubmit(getUserData)} className="pb-8 px-8 flex flex-col">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1">
             <div className="mb-2 w-full">
@@ -107,7 +127,9 @@ export default function Certificate() {
                   <span className="text-red-700 font-italic">{errors.cpf.message}</span>
                 )}
               </div>
-                <Button className="lg:w-2/5 max-lg:w-full lg:flex-0.5 justify-center items-center" onClick={() => setOpenModal(true)}>
+                {/* Botão que chama a função de carregar os dados do usuário e abre o Modal */}
+                {/* Habilitar o botão apenas quando inserir o CPF */}
+                <Button type="submit" className="lg:w-2/5 max-lg:w-full lg:flex-0.5 justify-center items-center" disabled={!isValid || loading}>
                   Confirmar
                 </Button>
             </div>
@@ -117,30 +139,45 @@ export default function Certificate() {
 
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>
-          Obtenha o certificado
+          Obtenha os seus recursos
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={handleSubmit(getCertificate)} className="p-4">
-            <div className="py-8">
-              <fieldset className="flex max-w-md flex-row gap-4">
-                <legend className="mb-4">Formato:</legend>
-                <div className="flex items-center gap-2">
-                  <Radio id="qrcode" value="qrcode" {...register("type")} defaultChecked />
-                  <Label htmlFor="qrcode">QRcode</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Radio id="image" name="countries" {...register("type")} value="image" />
-                  <Label htmlFor="image">Imagem</Label>
-                </div>
-              </fieldset>
+          <div className="space-y-6">
+            <p>
+              Por favor, confirme os dados abaixo e selecione o que deseja:
+            </p>
+            <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400 pb-6 pl-6">
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Nome:</span>
+                <span>{userData?.full_name}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Email:</span>
+                <span>{userData?.email}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">CPF:</span>
+                <span>{userData?.cpf}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Data de Nascimento:</span>
+                <span>{formatDate(userData?.birth_date)}</span>
+              </div>
             </div>
 
-            <div className="">
-              <Button className="w-full" onClick={() => setOpenModal(true)}>
-                Obter certificado
-              </Button>
-            </div>
-          </form>
+          </div>
+
+          <div className="flex flex-row gap-8">
+            {/* Botão que chama a função obter QrCode */}
+            <Button className="flex-1">
+              QrCode
+            </Button>
+
+            {/* Botão que chama a função de obter certificado */}
+            <Button className="flex-1">
+              Certificado
+            </Button>
+          </div>
         </Modal.Body>
       </Modal>
     </div>

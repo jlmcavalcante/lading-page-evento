@@ -53,7 +53,7 @@ const createUserFormSchema = z.object({
   adaptation_description: z.string().min(0, "Especifique a adaptação").optional(),
 });
 
-type CreateUserFormData = z.infer<typeof createUserFormSchema>;
+export type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export default function Form() {
   type StateType = {

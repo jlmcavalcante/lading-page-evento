@@ -57,7 +57,8 @@ export default function Hotels({}: Props) {
       },
       description: [
         "Código válido de 03/06/2024 a 07/06/2024",
-        "(86) 3142-2901 | (86) 3142-2902",
+        "(86) 3142-2901",
+        "(86) 3142-2902",
       ],
     },
     {
@@ -80,7 +81,6 @@ export default function Hotels({}: Props) {
         text: "whatsapp",
       },
       description: [
-        "Av. Rio Poty, 959 - Fátima 64052-790 - Teresina - Piauí - Brasil",
         "(86) 3303-2623",
         "(86) 9 8182-2623"
       ],
@@ -105,7 +105,6 @@ export default function Hotels({}: Props) {
         text: "",
       },
       description: [
-        "Av. Frei Serafim, 1696 - CentroTeresina - Piauí – Brasil",
         "(86) 3216-8000",
       ],
     }
@@ -118,9 +117,11 @@ export default function Hotels({}: Props) {
       <div className="grid grid-cols-4 gap-8 lg:gap-8 mb-12 max-lg:grid-cols-1 px-4 lg:px-8">
         {hotels.map((hotel, index) => (
           <div key={index} className="shadow-lg rounded-md flex flex-col">
-            <a href={hotel.gmaps} className="w-full h-36 radius-sm rounded-t-md object-cover lg:object-fill">
-              <img src={hotel.imagePath} alt={hotel.name} className="ml-[-0.1px]" />
-            </a>
+            <div className="w-full h-36 radius-sm rounded-t-md">
+              <a href={hotel.gmaps} className="radius-sm rounded-t-md">
+                <img src={hotel.imagePath} alt={hotel.name} className="w-full h-36 ml-[-0.1px] object-cover radius-sm rounded-t-md" />
+              </a>
+            </div>
             <div className="flex flex-col gap-4 p-4 bg-white dark:bg-gray-800 rounded-b-md flex-1 w-full">
               <a href={hotel.gmaps} className="text-xl font-medium text-gray-900 dark:text-white">
                 {hotel.name}

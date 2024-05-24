@@ -15,6 +15,7 @@ export default function Hotels({}: Props) {
       imagePath: "/hotels/blue-tree-hotel.jpeg",
       name: "Blue Tree Hotels",
       promotionalText: "Código Promocional: SINED10",
+      gmaps: "https://maps.app.goo.gl/1cH6LQDFbiek57677",
       email: {
         label: "Email",
         url: "grupos.riopoty@bluetree.com.br",
@@ -39,6 +40,7 @@ export default function Hotels({}: Props) {
       imagePath: "/hotels/uchoa-hotel.jpeg",
       name: "Uchoa Hotel",
       promotionalText: "Código Promocional: SINED",
+      gmaps: "https://maps.app.goo.gl/Y61j6QV62zvNsLgi8",
       email: {
         label: "Email",
         url: "reservas@uchoatereinahotel.com",
@@ -55,13 +57,15 @@ export default function Hotels({}: Props) {
       },
       description: [
         "Código válido de 03/06/2024 a 07/06/2024",
-        "(86) 3142-2901 | (86) 3142-2902",
+        "(86) 3142-2901",
+        "(86) 3142-2902",
       ],
     },
     {
       imagePath: "/hotels/alfa-hotel.jpg",
       name: "Alfa Hotel",
       promotionalText: "Tarifas Promocionais",
+      gmaps: "https://maps.app.goo.gl/oZ37My6VC6RLMPxt8",
       email: {
         label: "Email",
         url: "reservas@alfahotelteresina.com.br",
@@ -77,14 +81,15 @@ export default function Hotels({}: Props) {
         text: "whatsapp",
       },
       description: [
-        "Av. Rio Poty, 959 - Fátima 64052-790 - Teresina - Piauí - Brasil",
-        "(86)3303-2623 |  (86)9 8182-2623",
+        "(86) 3303-2623",
+        "(86) 9 8182-2623"
       ],
     },
     {
       imagePath: "/hotels/metropolitan-hotel-2.jpg",
       name: "Metropolitan Hotel",
       promotionalText: "Tarifas Promocionais",
+      gmaps: "https://maps.app.goo.gl/oQGCvCvqeQ9jDMKX7",
       email: {
         label: "Email",
         url: "reservas@metropolitanhotel.com.br",
@@ -100,9 +105,7 @@ export default function Hotels({}: Props) {
         text: "",
       },
       description: [
-        "Av. Frei Serafim, 1696 - CentroTeresina - Piauí – Brasil",
-        "Whats: (86)99566-1995",
-        "(86)3216-8000",
+        "(86) 3216-8000",
       ],
     }
   ]
@@ -114,11 +117,15 @@ export default function Hotels({}: Props) {
       <div className="grid grid-cols-4 gap-8 lg:gap-8 mb-12 max-lg:grid-cols-1 px-4 lg:px-8">
         {hotels.map((hotel, index) => (
           <div key={index} className="shadow-lg rounded-md flex flex-col">
-            <img src={hotel.imagePath} alt={hotel.name} className="w-full h-36 ml-[-0.1px] radius-sm rounded-t-md object-cover lg:object-fill" />
+            <div className="w-full h-36 radius-sm rounded-t-md">
+              <a href={hotel.gmaps} className="radius-sm rounded-t-md">
+                <img src={hotel.imagePath} alt={hotel.name} className="w-full h-36 ml-[-0.1px] object-cover radius-sm rounded-t-md" />
+              </a>
+            </div>
             <div className="flex flex-col gap-4 p-4 bg-white dark:bg-gray-800 rounded-b-md flex-1 w-full">
-              <span className="text-xl font-medium text-gray-900 dark:text-white">
+              <a href={hotel.gmaps} className="text-xl font-medium text-gray-900 dark:text-white">
                 {hotel.name}
-              </span>
+              </a>
               <Badge className="bg-[#04846c] w-fit text-white px-2">{hotel.promotionalText}</Badge>
               <div className="flex flex-row gap-4">
                 <a href={`mailto ${hotel.email.url}`} className="flex flex-col items-center gap-2">

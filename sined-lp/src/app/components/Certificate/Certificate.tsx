@@ -160,7 +160,7 @@ export default function Certificate() {
 
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>
-          {userData ? 'Você está inscrito no SINED 10' : 'Cadastro Necessário'}
+          {userData ? 'Você está inscrito no SINED VI' : 'Cadastro Necessário'}
         </Modal.Header>
         <Modal.Body>
           <div className="space-y-6">

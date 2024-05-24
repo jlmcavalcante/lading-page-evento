@@ -42,9 +42,7 @@ export default function Page() {
         <section>
           <Certificate />
         </section>
-      }
-
-      
+      }      
       {/*
       <section>
         <Certificate />

@@ -82,24 +82,28 @@ export default function Certificate() {
       <div className="py-8 px-8">
         <FormTitle>Consultar Inscrição</FormTitle>
       </div>
-      <form onSubmit={handleSubmit(getCertificate)} className="pb-8 px-8">
+      <form onSubmit={handleSubmit(getCertificate)} className="pb-8 px-8 flex flex-col">
         <div className="flex flex-col lg:flex-row gap-8">
-          <div className="">
-            <div className="mb-2 block">
+          <div className="flex-1">
+            <div className="mb-2 w-full">
               <Label htmlFor="cpf" value="CPF:" />
             </div>
-            <TextInput
-              type="text"
-              placeholder="Insira apenas os números do seu CPF"
-              {...register("cpf")}
-            />
-            {errors.cpf && (
-              <span className="text-red-700 font-italic">{errors.cpf.message}</span>
-            )}
+            <div className="flex lg:flex-row flex-col gap-8">
+              <div className="flex-1">
+                <TextInput
+                    type="text"
+                    placeholder="Insira apenas os números do seu CPF"
+                    {...register("cpf")}
+                />
+                {errors.cpf && (
+                  <span className="text-red-700 font-italic">{errors.cpf.message}</span>
+                )}
+              </div>
+                <Button className="lg:w-2/5 max-lg:w-full lg:flex-0.5 justify-center items-center" onClick={() => setOpenModal(true)}>
+                  Confirmar
+                </Button>
+            </div>
           </div>
-          <Button className="w-full" onClick={() => setOpenModal(true)}>
-            Confirmar
-          </Button>
         </div>
       </form>
 

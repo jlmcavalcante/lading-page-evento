@@ -160,36 +160,49 @@ export default function Certificate() {
 
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <Modal.Header>
-          {userData ? 'Obtenha o certificado' : 'Cadastro Necessário'}
+          {userData ? 'Você está inscrito no SINED 10' : 'Cadastro Necessário'}
         </Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
             {userData ? (
               <>
-                <p>Por favor, confirme os dados abaixo e obtenha seu recurso:</p>
-                <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400 pb-6 pl-6">
-                  <div className="flex items-center gap-2">
+                <p className="text-sm text-gray-500 dark:text-gray-400 pb-1 pl-4 pr-4 text-justify"
+                >Confira abaixo algumas de suas informações cadastrais e certifique-se de que estão corretas, tendo em vista que serão utilizadas para gerar seu certificado de participação. Em caso de divergência, entre em contato conosco através do numero de telefone 
+                <span className="ml-1 text-blue-400 dark:text-blue-400">
+                  (86) 3215-3800.
+                </span>
+                <span className="font-medium ml-1">
+                  Recomendamos, também que realize o screenshot desta tela em caso de necessidade de comprovação da inscrição no evento.
+                </span></p>
+                <div className="flex flex-row pl-4 pr-4 gap-2">
+                  <MdInfo className="text-6xl text-gray-500 dark:text-gray-400"/>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 text-justify"
+                  >O QR Code de presença estará disponível durante o evento e será utilizado por nosso staff para registrar sua presença. Já o certificado de participação estará disponível após o evento.</p>
+                </div>
+                
+                <div className="text-base flex flex-col leading-relaxed text-gray-500 dark:text-gray-400 pb-4 pl-4">
+                  <div className="flex items-center gap-2 max-md:text-sm">
                     <span className="font-bold">Nome:</span>
                     <span>{userData.full_name}</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 max-md:text-sm">
                     <span className="font-bold">Email:</span>
                     <span>{userData.email}</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 max-md:text-sm">
                     <span className="font-bold">CPF:</span>
-                    <span>{userData.cpf}</span>
+                    <span>{userData.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.***.***-$4")}</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 max-md:text-sm">
                     <span className="font-bold">Data de Nascimento:</span>
                     <span>{formatDate(userData.birth_date)}</span>
                   </div>
                 </div>
-                <div className="flex flex-row gap-8">
-                  <Button className="flex-1" onClick={getQrcode}>
-                    QrCode
+                <div className="flex flex-row gap-8 pl-4 pr-4">
+                  <Button className="flex-1" onClick={getQrcode} disabled={new Date() < new Date("2024-05-31")}>
+                    QR Code
                   </Button>
-                  <Button className="flex-1" onClick={getCertificate}>
+                  <Button className="flex-1" onClick={getCertificate} disabled={new Date() < new Date("2024-08-06")}>
                     Certificado
                   </Button>
                 </div>

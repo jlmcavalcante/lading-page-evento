@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormTitle } from "../form/FormStyles";
 import { useState } from "react";
+import { MdInfo } from "react-icons/md";
 
 
 const apiBaseUrl = "https://sined.tcepi.tc.br/api";
@@ -79,9 +80,16 @@ export default function Certificate() {
 
   return (
     <div className="content-container flex-col">
-      <div className="py-8 px-8">
+      <div className="pt-8 px-8">
         <FormTitle>Consultar Inscrição</FormTitle>
       </div>
+      <p className="text-md text-gray-500 dark:text-gray-400 mb-8 px-8 pt-4">
+        <div className="flex flex-row gap-2">
+          <span><MdInfo/></span>
+          <span className="font-bold">Atenção:</span>
+        </div>
+        Consulte aqui os dados da sua inscrição, informando o seu CPF, gere o QR Code de presença e faça o download do certificado de participação no evento, que estará disponível após o evento.
+      </p>
       <form onSubmit={handleSubmit(getCertificate)} className="pb-8 px-8 flex flex-col">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1">

@@ -214,7 +214,7 @@ const Schedule: React.FC = () => {
                     },
                     speakers: [],
                     theme: "",
-                    description: "Premiação",
+                    description: "Premiação !",
                     subcontent: [],
                 },
             ]
@@ -271,22 +271,31 @@ const Schedule: React.FC = () => {
                                                         }
                                                     </Accordion.Title>
                                                     <Accordion.Content>
-                                                        <p>
-                                                            {content.description}
-                                                        </p>
-                                                        <br />
+                                                        {
+                                                            content.description &&
+                                                            <p>
+                                                                {content.description}
+                                                                <br />
+                                                            </p>
+                                                        }
+                                                        {
+                                                            content.speakers.length > 1 &&
+                                                            <p>
+                                                                Palestrantes:
+                                                            </p>
+                                                        }
                                                         {
                                                             content.speakers.map((speaker, index) => {
                                                                 return (
-                                                                    <p>
+                                                                    // html tag of a bullet point list
+                                                                    <li className="pl-2">
                                                                         {speaker}
-                                                                    </p>
+                                                                    </li>
                                                                 );
                                                             })
                                                         }
-                                                        <br />
                                                         {
-                                                            content.location !== "" &&
+                                                            content.location &&
                                                             <p>
                                                                 Local: {content.location}
                                                             </p>
@@ -294,11 +303,16 @@ const Schedule: React.FC = () => {
                                                         {
                                                             content.subcontent.map((sub, index) => {
                                                                 return (
-                                                                    <div>
-                                                                        <br />
-                                                                        <p>
-                                                                            {sub.title} - {sub.description}
+                                                                    <div className="border-t-[1px] border-gray-300 dark:border-gray-700 mt-4">
+                                                                        <p className="font-bold">
+                                                                            {sub.title}
                                                                         </p>
+                                                                        {
+                                                                            sub.description &&
+                                                                            <li className="pl-2">
+                                                                                {sub.description}
+                                                                            </li>
+                                                                        }
                                                                         <p>
                                                                             Local: {sub.location}
                                                                         </p>

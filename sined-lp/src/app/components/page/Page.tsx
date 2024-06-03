@@ -43,11 +43,6 @@ export default function Page() {
           <Certificate />
         </section>
       }      
-      {/*
-      <section>
-        <Certificate />
-      </section>
-      */}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Modal } from "flowbite-react";
 import { AiOutlineAlert } from "react-icons/ai";
-import { FormTitle } from "./FormStyles";
+import { FormTitle, Container } from "./FormStyles";
 
 const apiBaseUrl = "https://sined.tcepi.tc.br/api";
 
@@ -207,10 +207,10 @@ export default function Form() {
   }
 
   return (
-    <div className="content-container flex-col" id="formulario">
-      <div className="py-8 px-8">
+    <Container id="formulario">
+      <div className="justify-center flex flex-col items-center">
         <FormTitle>Inscrição</FormTitle>
-        <p className="mt-2 text-md text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-md text-gray-500 dark:text-gray-400 px-8">
           <div className="flex flex-row gap-2">
             <span><AiOutlineAlert /></span>
             <span className="font-bold">Atenção:</span>
@@ -543,6 +543,6 @@ export default function Form() {
           onClick={() => window.location.reload()}>OK</Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </Container>
   );
 }

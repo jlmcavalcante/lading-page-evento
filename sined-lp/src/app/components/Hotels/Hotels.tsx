@@ -114,7 +114,7 @@ export default function Hotels({}: Props) {
       <h1 className="text-[3rem] px-4 text-[#fff] text-center lg:text-left mt-8 mb-8 lg:px-8">
         Hotéis Parceiros
       </h1>
-      <div className="grid grid-cols-4 gap-8 lg:gap-8 mb-12 max-lg:grid-cols-1 px-4 lg:px-8">
+      <div className="grid grid-cols-4 gap-8 lg:gap-8 mb-12 max-lg:grid-cols-1 px-8 lg:px-8">
         {hotels.map((hotel, index) => (
           <div key={index} className="shadow-lg rounded-md flex flex-col">
             <div className="w-full h-36 radius-sm rounded-t-md">
@@ -122,7 +122,7 @@ export default function Hotels({}: Props) {
                 <img src={hotel.imagePath} alt={hotel.name} className="w-full h-36 ml-[-0.1px] object-cover radius-sm rounded-t-md" />
               </a>
             </div>
-            <div className="flex flex-col gap-4 p-4 bg-white dark:bg-gray-800 rounded-b-md flex-1 w-full">
+            <div className="flex flex-col gap-4 p-6 bg-white dark:bg-gray-800 rounded-b-md flex-1 w-full">
               <a href={hotel.gmaps} className="text-xl font-medium text-gray-900 dark:text-white">
                 {hotel.name}
               </a>

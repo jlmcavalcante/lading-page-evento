@@ -17,20 +17,15 @@ const Schedule: React.FC = () => {
                     location: "Teatro SESC",
                     title: "Abertura",
                     mainSpeaker: {
-                        name: "Camilo Sobreira de Santana",
-                        title: "Ministro da Educação",
+                        name: "Luiz Fernando Abrucio",
+                        title: "Professor FGV",
                     },
                     speakers: [
-                        "Camilo Sobreira de Santana – Ministro da Educação",
+                        "Luiz Fernando Abrucio – Professor FGV",
                     ],
-                    theme: "Criança Nacional Alfabetizada",
+                    theme: "O Sistema Nacional de Educação e a Governança Colaborativa: Principais Desafios",
                     description: "",
                     subcontent: [
-                        {
-                            title: "O Sistema Nacional de Educação e a Governança Colaborativa: principais desafios",
-                            description: "Luiz Fernando Abrucio – Professor FGV",
-                            location: "Teatro SESC",
-                        },
                         {
                             title: "Apresentação cultural",
                             description: "Luar do São João",
@@ -54,14 +49,14 @@ const Schedule: React.FC = () => {
                     location: "Teatro SESC",
                     title: "Painel 1",
                     mainSpeaker: {
-                        name: "Cons. Patrícia Sarmento",
-                        title: "TCE/MS",
+                        name: "Susana Maria Fontes Azevedo Freitas",
+                        title: "",
                     },
                     speakers: [
                         "Washington Bandeira – Secretário de estado da Educação do Piauí",
                         "Vitor de Ângelo - Secretário de estado da Educação do Espírito Santo",
                         "Jucineide Fernandes - Secretária Executiva do Ensino Médio e Profissional (SEDUC/CE)",
-                        "Mediação: Cons. Patrícia Sarmento - TCE/MS",
+                        "Mediação: Susana Maria Fontes Azevedo Freitas",
                     ],
                     theme: "Regime de Colaboração",
                     description: "",
@@ -106,7 +101,7 @@ const Schedule: React.FC = () => {
                     location: "Teatro SESC",
                     title: "Painel 3",
                     mainSpeaker: {
-                        name: "Cons. Suzana Maria Fontes Azevedo Freitas",
+                        name: "Patrícia Sarmento dos Santos",
                         title: "TCE/SE",
                     },
                     speakers: [
@@ -114,7 +109,7 @@ const Schedule: React.FC = () => {
                         "Juliana Rohsner Vianna Toniati – Secretária municipal de Educação de Vitória/ES",
                         "Danilo Alves de Carvalho – Prefeito de Itabaianinha/SE",
                         "José Raimundo de Sá Lopes – Prefeito de Oeiras/PI",
-                        "Mediação: Cons. Suzana Maria Fontes Azevedo Freitas - TCE/SE"
+                        "Mediação: Patrícia Sarmento dos Santos"
                     ],
                     theme: "Tema: Experiências municipais, reordenamento de rede e resultados (prefeitos)",
                     description: "",
@@ -162,6 +157,8 @@ const Schedule: React.FC = () => {
                         title: "TCE/PI"
                     },
                     speakers: [,
+                        "Maurício Holanda - Secretário da Secretaria de Articulação Intersetorial e com os Sistemas de Ensino do Ministério da Educação (SASE/MEC)",
+                        "Raimunda Alves Melo -Doutora em Educação pela UFPI",
                         "Mediação: Cons. Lilian Martins – TCE/PI"
 
                     ],

@@ -6,7 +6,7 @@ import { FormTitle } from "../form/FormStyles";
 import { useState } from "react";
 import { MdInfo } from "react-icons/md";
 import { CreateUserFormData } from "../form/Form";
-
+import { MainContainer } from "../About/AboutStyles";
 
 const apiBaseUrl = "https://sined.tcepi.tc.br/api";
 
@@ -120,19 +120,19 @@ export default function Certificate() {
   }
 
   return (
-    <div className="content-container flex-col">
+    <MainContainer className="flex-col">
       <div className="pt-8 px-8">
         <FormTitle>Consultar Inscrição</FormTitle>
       </div>
-      <p className="text-md text-gray-500 dark:text-gray-400 mb-8 px-8 pt-4">
+      <p className="text-md text-gray-500 dark:text-gray-400 mb-8 px-8 pt-4 content-container flex flex-col md:flex-row">
         <div className="flex flex-row gap-2">
           <span><MdInfo/></span>
           <span className="font-bold">Atenção:</span>
         </div>
         Consulte aqui os dados da sua inscrição, informando o seu CPF, gere o QR Code de presença e faça o download do certificado de participação no evento, que estará disponível após o evento.
       </p>
-      <form onSubmit={handleSubmit(getUserData)} className="pb-8 px-8 flex flex-col">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <form onSubmit={handleSubmit(getUserData)} className="content-container pb-8 flex flex-col w-full px-8">
+        <div className="flex flex-col lg:flex-row gap-8 w-full">
           <div className="flex-1">
             <div className="mb-2 w-full">
               <Label htmlFor="cpf" value="CPF:" />
@@ -213,6 +213,6 @@ export default function Certificate() {
           </div>
         </Modal.Body>
       </Modal>
-    </div>
+    </MainContainer>
   );
 }

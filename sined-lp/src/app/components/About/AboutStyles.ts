@@ -1,12 +1,28 @@
 import styled from "styled-components";
 import { Link as LinkScroll } from "react-scroll";
 
+export const MainContainer = styled.section`
+    background: var(--gradient-white-2);
+    padding: 5rem 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    @media (max-width: 1024px) {
+        padding: 5rem 5rem;
+    }
+    @media (max-width: 768px) {
+        padding: 3rem 2rem;
+    }
+`;
+
 export const Container = styled.section`
     padding: 5rem 10rem;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    background: var(--gradient-white-2);
+    background: transparent;
     gap: 2rem;
     @media (max-width: 1200px) {
         flex-direction: column;
@@ -53,7 +69,7 @@ export const InfoSubTitle = styled.h3`
     font-weight: 400;
     font-size: 1.8rem;
     @media (max-width: 1024px) {
-        text-align: start;
+        text-align: center;
         padding: 0 1rem;
     }
 `;
@@ -62,7 +78,7 @@ export const InfoTitle = styled.h1`
     font-size: 3rem;
     color: rgba(59,0,163,255);
     @media (max-width: 1024px) {
-        text-align: start;
+        text-align: center;
         padding: 0 1rem;
     }
 `;
@@ -163,6 +179,11 @@ export const CardTitle = styled.h2`
     color: #1c1c24;
     z-index: 1;
     transition: color 0.5s;
+
+    @media (max-width: 1024px) {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
 `;
 
 export const CardText = styled.p`

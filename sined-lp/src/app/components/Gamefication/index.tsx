@@ -20,7 +20,9 @@ const Gamefication: React.FC = () => {
                     </span>
                     , a gamificação com o aplicativo do SINED que visa tornar a experiência do usuário mais dinâmica e imersiva. Além de incentivar a competitividade saúdavel e networking entre os participantes por pontos e premiações.
                 </Text>
-                <div className="flex flex-col lg:flex-row gap-8">
+                {
+                    /*
+                     <div className="flex flex-col lg:flex-row gap-8">
                     <button type="button" className="flex items-center justify-center w-48 mt-3 text-white bg-black rounded-lg h-14">
                         <div className="mr-3">
                             <svg viewBox="30 336.7 120.9 129.2" width="30">
@@ -60,6 +62,8 @@ const Gamefication: React.FC = () => {
                         </div>
                     </button>
                 </div>
+                    */
+                }
             </Info>
         </Container>
     );

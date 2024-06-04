@@ -111,7 +111,7 @@ export default function Hotels({}: Props) {
   ]
   return (
     <div className="content-container flex-col px-8 max-lg:justify-center max-lg:items-center">
-      <h1 className="text-[3rem] px-4 text-[#fff] text-center lg:text-left mt-8 mb-8 lg:px-8">
+      <h1 className="text-[3rem] px-4 text-[#fff] text-center lg:text-center mt-8 mb-8 lg:px-8">
         Hotéis Parceiros
       </h1>
       <div className="grid grid-cols-4 gap-8 lg:gap-8 mb-12 max-lg:grid-cols-1 px-8 lg:px-8">

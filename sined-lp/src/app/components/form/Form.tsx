@@ -210,12 +210,12 @@ export default function Form() {
     <Container id="formulario">
       <div className="justify-center flex flex-col items-center">
         <FormTitle>Inscrição</FormTitle>
-        <p className="mt-2 text-md text-gray-500 dark:text-gray-400 px-8">
+        <p className="mt-2 text-md text-gray-500 dark:text-gray-400 px-8 lg:px-40 2xl:px-8">
           <div className="flex flex-row gap-2">
             <span><AiOutlineAlert /></span>
             <span className="font-bold">Atenção:</span>
           </div>
-          Para assegurar a integridade no formato dos dados, por favor, preencha os campos sem a utilização de ferramentas de auto-preenchimento. Caso contrário, a inscrição poderá não ser efetivada.
+          Por favor, preencha os campos sem a utilização de ferramentas de auto-preenchimento. Caso contrário, a inscrição poderá não ser efetivada.
         </p>
       </div>
 

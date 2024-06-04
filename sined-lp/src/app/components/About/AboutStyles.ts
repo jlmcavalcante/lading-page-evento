@@ -9,11 +9,14 @@ export const MainContainer = styled.section`
     justify-content: center;
     align-items: center;
     gap: 2rem;
+    @media (max-width: 1600px) {
+        padding: 5rem 2rem;
+    }
     @media (max-width: 1024px) {
-        padding: 5rem 5rem;
+        padding: 5rem 2rem;
     }
     @media (max-width: 768px) {
-        padding: 3rem 2rem;
+        padding: 3rem 1rem;
     }
 `;
 
@@ -24,15 +27,16 @@ export const Container = styled.section`
     align-items: flex-start;
     background: transparent;
     gap: 2rem;
-    @media (max-width: 1200px) {
+    @media (max-width: 1600px) {
         flex-direction: column;
         align-items: center;
-    }
-    @media (max-width: 1024px) {
         padding: 5rem 5rem;
     }
+    @media (max-width: 1024px) {
+        padding: 5rem 2rem;
+    }
     @media (max-width: 768px) {
-        padding: 3rem 2rem;
+        padding: 3rem 1rem;
     }
 `;
 
@@ -42,7 +46,7 @@ export const InfoContainer = styled.div`
     justify-content: space-between;
     width: 50%;
     gap: 1rem;
-    @media (max-width: 1201px) {
+    @media (max-width: 1600px) {
         width: 100%;
         gap: 1rem;
         align-items: center;

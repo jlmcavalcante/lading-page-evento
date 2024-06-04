@@ -4,9 +4,18 @@ export const Container = styled.div`
     display: flex;
     background: transparent;
     padding: 0rem 10rem;
-    @media (max-width: 1024px) {
+    @media (max-width: 1600px) {
+        justify-content: center;
+        align-items: center;
         flex-direction: column-reverse;
+        padding: 0rem 5rem;
         padding: 0;
+    }
+    @media (max-width: 1024px) {
+        padding: 0rem 2rem;
+    }
+    @media (max-width: 768px) {
+        padding: 0rem 1rem;
     }
 `;
 
@@ -38,20 +47,26 @@ export const Info = styled.div`
     padding: 4rem;
     gap: 1.5rem;
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1600px) {
         width: 100%;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem;
+        justify-content: start;
+        align-items: start;
+        padding: 0rem 5rem;
+    }
+    @media (max-width: 1024px) {
+        padding: 0rem 2rem;
+    }
+    @media (max-width: 768px) {
+        padding: 0rem 1rem;
     }
 `;
 
-export const SubTitle = styled.h3`
+export const SubTitle = styled.div`
     color: var(--color-gray);
     font-weight: 400;
     margin-bottom: 0.5rem;
-    @media (max-width: 768px) {
-        text-align: start;
+    text-align: start;
+    @media (max-width: 1600px) {
         padding: 0 1rem;
     }
 `;
@@ -60,7 +75,7 @@ export const Title = styled.h1`
     color: var(--color-primary);
     font-size: 3rem;
     margin-bottom: 1rem;
-    @media (max-width: 1024px) {
+    @media (max-width: 1600px) {
         text-align: center;
     }
     @media (max-width: 768px) {

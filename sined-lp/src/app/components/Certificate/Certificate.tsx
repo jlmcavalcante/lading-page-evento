@@ -121,17 +121,18 @@ export default function Certificate() {
 
   return (
     <MainContainer className="flex-col">
-      <div className="pt-8 px-8">
+      <div className="pt-4 px-8">
         <FormTitle>Consultar Inscrição</FormTitle>
       </div>
-      <p className="text-md text-gray-500 dark:text-gray-400 mb-8 px-8 pt-4 content-container flex flex-col md:flex-row">
+      <div className="text-md text-gray-500 dark:text-gray-400 mb-8 px-10 lg:px-52 pt-2 flex flex-col 2xl:px-96">
         <div className="flex flex-row gap-2">
           <span><MdInfo/></span>
-          <span className="font-bold">Atenção:</span>
+          <span className="font-bold">Informação:</span>
         </div>
+        
         Consulte aqui os dados da sua inscrição, informando o seu CPF, gere o QR Code de presença e faça o download do certificado de participação no evento, que estará disponível após o evento.
-      </p>
-      <form onSubmit={handleSubmit(getUserData)} className="content-container pb-8 flex flex-col w-full px-8">
+      </div>
+      <form onSubmit={handleSubmit(getUserData)} className="pb-8 flex flex-col w-full px-10 lg:px-52 2xl:px-96">
         <div className="flex flex-col lg:flex-row gap-8 w-full">
           <div className="flex-1">
             <div className="mb-2 w-full">

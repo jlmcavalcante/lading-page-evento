@@ -23,7 +23,7 @@ const Gamefication: React.FC = () => {
                 </Text>
                 {
                 <div className="flex flex-col lg:flex-row gap-8 w-full justify-center items-center 2xl:justify-start">
-                    <button type="button" className="flex items-center justify-center w-48 mt-3 text-white bg-black rounded-lg h-14" onClick={() => window.open("https://play.google.com/store/apps/details?id=br.com.sined.app", "_blank")}>
+                    <button type="button" className="flex items-center justify-center w-48 mt-3 text-white bg-black rounded-lg h-14" onClick={() => window.open("https://play.google.com/store/apps/details?id=com.appsined2", "_blank")}>
                         <div className="mr-3">
                             <svg viewBox="30 336.7 120.9 129.2" width="30">
                                 <path fill="#FFD400" d="M119.2,421.2c15.3-8.4,27-14.8,28-15.3c3.2-1.7,6.5-6.2,0-9.7  c-2.1-1.1-13.4-7.3-28-15.3l-20.1,20.2L119.2,421.2z">
@@ -45,7 +45,7 @@ const Gamefication: React.FC = () => {
                             </div>
                         </div>
                     </button>
-                   <button type="button" className="flex items-center justify-center w-48 mt-3 text-white bg-black rounded-lg h-14 max-md:mb-12" onClick={() => window.open("", "_blank")}>
+                   <button type="button" className="flex items-center justify-center w-48 mt-3 text-white bg-black rounded-lg h-14 max-md:mb-12" onClick={() => window.open("https://sined.tech/", "_blank")}>
                         <div className="mr-3">
                             <CiMobile3 size={30} className="mr-2"/>
                         </div>

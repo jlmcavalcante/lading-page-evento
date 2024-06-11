@@ -57,7 +57,7 @@ export default function Certificate() {
       // Cria um elemento <a> temporário para fazer o download
       const downloadLink = document.createElement('a');
       downloadLink.href = blobUrl;
-      downloadLink.download = `imagem-${userData.id}`;
+      downloadLink.download = `certificado-${userData.id}`;
 
       // Simula um clique no link para iniciar o download
       document.body.appendChild(downloadLink);
@@ -221,11 +221,11 @@ export default function Certificate() {
         <Modal.Header>Erro ao baixar o certificado</Modal.Header>
         <Modal.Body>
           <p className="text-sm text-gray-500 dark:text-gray-400 pb-1 pl-4 pr-4 text-justify">
-            Não identificamos nenhum registro de presença durante o evento para o CPF informado. Por favor, entre em contato conosco para mais informações. Nosso telefone é 
+            Nenhum registro de presença identificado durante o período do evento para o CPF informado. Por favor, entre em contato conosco através do número de telefone:
             <span className="text-blue-400 dark:text-blue-400">
               (86) 3215-3800
             </span>
-            .
+            para mais informações.
           </p>
         </Modal.Body>
       </Modal>

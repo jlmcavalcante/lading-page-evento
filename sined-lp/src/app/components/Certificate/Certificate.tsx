@@ -203,7 +203,7 @@ export default function Certificate() {
                   <Button className="flex-1" onClick={getQrcode} disabled={new Date() < new Date("2024-05-31")}>
                     QR Code
                   </Button>
-                  <Button className="flex-1" onClick={getCertificate} disabled={new Date() < new Date("2024-08-06")}>
+                  <Button className="flex-1" onClick={getCertificate} disabled={new Date() < new Date("2024-06-10")}>
                     Certificado
                   </Button>
                 </div>

@@ -26,6 +26,7 @@ type User = CreateUserFormData & {id: number};
 export default function Certificate() {
   const [userData, setUserData] = useState<User>();
   const [isRequestSent, setIsRequestSent] = useState(false);
+  const [hasNoCertificate, setHasNoCertificate] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -67,6 +68,7 @@ export default function Certificate() {
       URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error('Erro da requisição: ', error);
+      setHasNoCertificate(true);
     }
   }  
   
@@ -167,8 +169,8 @@ export default function Certificate() {
           <div className="space-y-6">
             {userData ? (
               <>
-                <p className="text-sm text-gray-500 dark:text-gray-400 pb-1 pl-4 pr-4 text-justify"
-                >Confira abaixo algumas de suas informações cadastrais e certifique-se de que estão corretas, tendo em vista que serão utilizadas para gerar seu certificado de participação. Em caso de divergência, entre em contato conosco através do numero de telefone 
+                <p className="text-sm text-gray-500 dark:text-gray-400 pb-1 pl-4 pr-4 text-justify">
+                  Confira abaixo algumas de suas informações cadastrais e certifique-se de que estão corretas, tendo em vista que serão utilizadas para gerar seu certificado de participação. Em caso de divergência, entre em contato conosco através do numero de telefone 
                 <span className="ml-1 text-blue-400 dark:text-blue-400">
                   (86) 3215-3800.
                 </span>
@@ -200,7 +202,7 @@ export default function Certificate() {
                   </div>
                 </div>
                 <div className="flex flex-row gap-8 pl-4 pr-4">
-                  <Button className="flex-1" onClick={getQrcode} disabled={new Date() < new Date("2024-05-31")}>
+                  <Button className="flex-1" onClick={getQrcode} disabled={new Date() < new Date("2024-05-31") || new Date() > new Date("2024-06-06")}>
                     QR Code
                   </Button>
                   <Button className="flex-1" onClick={getCertificate} disabled={new Date() < new Date("2024-06-10")}>
@@ -212,6 +214,19 @@ export default function Certificate() {
               <p>Não foi possível encontrar nenhum usuário com esse CPF, certifique-se de que você já fez o seu cadastro.</p>
             )}
           </div>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={hasNoCertificate} onClose={() => setHasNoCertificate(false)}>
+        <Modal.Header>Erro ao baixar o certificado</Modal.Header>
+        <Modal.Body>
+          <p className="text-sm text-gray-500 dark:text-gray-400 pb-1 pl-4 pr-4 text-justify">
+            Não identificamos nenhum registro de presença durante o evento para o CPF informado. Por favor, entre em contato conosco para mais informações. Nosso telefone é 
+            <span className="text-blue-400 dark:text-blue-400">
+              (86) 3215-3800
+            </span>
+            .
+          </p>
         </Modal.Body>
       </Modal>
     </MainContainer>

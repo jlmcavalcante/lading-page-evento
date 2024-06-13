@@ -29,14 +29,14 @@ export default function Page() {
         </section>
       }
       {
-        <section>
-          <Form />
-        </section>
+        //<section>
+        //  <Form />
+        // </section>
       }
       {
-        <section className="bg-[#3c06a4]">
-          <Hotels />
-        </section>
+        //<section className="bg-[#3c06a4]">
+        //  <Hotels />
+        //</section>
       }
       {
         <section>

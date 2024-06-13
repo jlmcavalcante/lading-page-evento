@@ -234,10 +234,10 @@ const Schedule: React.FC = () => {
                             Materiais
                         </div>
                     </a>
-                    <a href="https://drive.google.com/drive/folders/1nYwbKm5mn3Qa1G9yb876e94pNeVFtdDf?usp=sharing" target="_blank" rel="noreferrer" className="text-white">
+                    <a href="https://www.flickr.com/photos/159944433@N04/with/53772111908" target="_blank" rel="noreferrer" className="text-white">
                         <span className="flex flex-row gap-2 justify-center ">
                             <FaPhotoFilm />
-                            Vídeos
+                            Fotos
                         </span>
                     </a>
                 </p>

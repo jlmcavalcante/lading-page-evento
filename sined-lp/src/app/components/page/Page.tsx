@@ -20,12 +20,17 @@ export default function Page() {
       }
       {
         <section>
-          <About />
+          <Certificate />
         </section>
       }
       {
         <section className="bg-[#3c06a4]">
           <Schedule />
+        </section>
+      }
+      {
+        <section>
+          <About />
         </section>
       }
       {
@@ -38,11 +43,6 @@ export default function Page() {
         //  <Hotels />
         //</section>
       }
-      {
-        <section>
-          <Certificate />
-        </section>
-      }      
     </div>
   );
 }

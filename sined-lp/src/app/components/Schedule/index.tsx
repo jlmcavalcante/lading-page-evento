@@ -2,6 +2,8 @@ import React from "react";
 import { Card, Tabs, Accordion } from "flowbite-react";
 import { customTabTheme } from '../../flowbite-themes/TabsTheme';
 import { HiCalendar } from "react-icons/hi";
+import { FaGoogleDrive } from "react-icons/fa";
+import { FaPhotoFilm } from "react-icons/fa6";
 import {
     Title,
 } from "./ScheduleStyles";
@@ -224,6 +226,21 @@ const Schedule: React.FC = () => {
                 <Title>
                     Programação
                 </Title>
+                <p className="flex flex-col text-center align-center justify-center text-lg text-white gap-4">
+                    Confira aqui os arquivos disponibilizados pela comissão organizadora do evento
+                    <a href="https://drive.google.com/drive/folders/1nYwbKm5mn3Qa1G9yb876e94pNeVFtdDf?usp=sharing" target="_blank" rel="noreferrer" className="text-white">
+                        <div className="flex flex-row gap-2 justify-center align-center">
+                            <FaGoogleDrive />
+                            Materiais
+                        </div>
+                    </a>
+                    <a href="https://drive.google.com/drive/folders/1nYwbKm5mn3Qa1G9yb876e94pNeVFtdDf?usp=sharing" target="_blank" rel="noreferrer" className="text-white">
+                        <span className="flex flex-row gap-2 justify-center ">
+                            <FaPhotoFilm />
+                            Vídeos
+                        </span>
+                    </a>
+                </p>
             </div>
 
           <Tabs
